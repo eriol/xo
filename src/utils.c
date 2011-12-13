@@ -1,6 +1,8 @@
+#include <sys/ioctl.h>
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
+
 
 char getch(void) {
     char buf = 0;
@@ -20,4 +22,25 @@ char getch(void) {
     if (tcsetattr(0, TCSADRAIN, &old) < 0)
         perror ("tcsetattr ~ICANON");
     return (buf);
+}
+
+/* get_terminal_size -- get the terminal window size and store it in row and
+ * col pointers.
+ * 
+ * Return 0 in case of success, -1 otherwise
+ */
+
+int get_terminal_size(unsigned short *row, unsigned short *col)
+{
+    struct winsize ws;
+
+    if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) == -1) {
+        perror("get_terminal_size: can't get terminal size");
+        return -1;
+    }
+
+    *row = ws.ws_row;
+    *col = ws.ws_col;
+
+    return 0;
 }
