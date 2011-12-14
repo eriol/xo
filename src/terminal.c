@@ -24,13 +24,13 @@ char getch(void) {
     return (buf);
 }
 
-/* get_terminal_size -- get the terminal window size and store it in row and
+/* terminal_get_size -- get the terminal window size and store it in row and
  * col pointers.
  * 
  * Return 0 in case of success, -1 otherwise
  */
 
-int get_terminal_size(unsigned short *row, unsigned short *col)
+int terminal_get_size(unsigned short *row, unsigned short *col)
 {
     struct winsize ws;
 

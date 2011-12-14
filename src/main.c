@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #include "monitorbuffer.h"
-#include "utils.h"
+#include "terminal.h"
 
 
 
@@ -37,7 +37,7 @@ int main(void)
         perror("Error in pthread_create.");
     }
 
-    get_terminal_size(&row, &col);
+    terminal_get_size(&row, &col);
     printf("Message from main()\n");
     printf("row: %hd col %hd\n", row, col);
 
