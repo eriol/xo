@@ -11,9 +11,11 @@ int buffer_init(buffer_t *b, int size)
     b->data = (buf_element_t *) malloc(sizeof(buf_element_t) * size);
     pthread_mutex_init(&b->mtx_write, NULL);
     pthread_mutex_init(&b->mtx_read, NULL);
+
+    return (b->data == NULL) ? 1 : 0;
 }
 
-int buffer_append(buffer_t *b, int value)
+void buffer_append(buffer_t *b, buf_element_t value)
 {
     pthread_mutex_lock(&b->mtx_write);
     b->data[b->count] = value;
@@ -45,13 +47,14 @@ int buffer_read(buffer_t *b, buf_element_t *dest)
     return read_elements;
 }
 
-int buffer_clean(buffer_t *b)
+void buffer_clean(buffer_t *b)
 {
     pthread_mutex_lock(&b->mtx_write);
     b->count = 0;
+    pthread_mutex_unlock(&b->mtx_write);
 }
 
-int buffer_free(buffer_t *b)
+void buffer_free(buffer_t *b)
 {
     if (b->data != NULL)
         free(b->data);

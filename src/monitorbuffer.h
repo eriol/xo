@@ -14,12 +14,12 @@ typedef struct {
 
 int buffer_init(buffer_t *b, int size);
 
-int buffer_append(buffer_t *b, int value);
-
-int buffer_get_actual_data_size(buffer_t *b);
+void buffer_append(buffer_t *b, buf_element_t value);
 
 int buffer_read(buffer_t *b, buf_element_t *dest);
 
-int buffer_clean(buffer_t *b);
+void buffer_clean(buffer_t *b);
+
+void buffer_free(buffer_t *b);
 
 #endif /* MONITORBUFFER_H */
