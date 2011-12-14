@@ -3,7 +3,7 @@
 
 #include <pthread.h>
 
-#define buf_element_t int
+#define buf_element_t char
 #define BUFFER_MAX_SIZE 50
 
 typedef struct {
@@ -18,7 +18,7 @@ int buffer_append(buffer_t *b, int value);
 
 int buffer_get_actual_data_size(buffer_t *b);
 
-int buffer_read(buffer_t *b, int *dest);
+int buffer_read(buffer_t *b, buf_element_t *dest);
 
 int buffer_clean(buffer_t *b);
 
