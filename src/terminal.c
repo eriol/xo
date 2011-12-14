@@ -24,10 +24,11 @@ char getch(void) {
     return (buf);
 }
 
-/* terminal_get_size -- get the terminal window size and store it in row and
+/**
+ * terminal_get_size -- get the terminal window size and store it in row and
  * col pointers.
  * 
- * Return 0 in case of success, -1 otherwise
+ * @return 0 in case of success, -1 otherwise
  */
 
 int terminal_get_size(unsigned short *row, unsigned short *col)
@@ -43,4 +44,14 @@ int terminal_get_size(unsigned short *row, unsigned short *col)
     *col = ws.ws_col;
 
     return 0;
+}
+
+/**
+ * terminal_clear -- clear the terminal window and reset the cursor to the
+ * top-left.
+ */
+
+void terminal_clear(void)
+{
+    fputs("\033[2J\033[1;1H", stdout);
 }

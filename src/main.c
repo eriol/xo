@@ -37,6 +37,7 @@ int main(void)
         perror("Error in pthread_create.");
     }
 
+    terminal_clear();
     terminal_get_size(&row, &col);
     printf("Message from main()\n");
     printf("row: %hd col %hd\n", row, col);
