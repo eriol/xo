@@ -1,8 +1,6 @@
 #ifndef MONITORBUFFER_H
 #define MONITORBUFFER_H
 
-#include <pthread.h>
-
 #define buf_element_t char
 #define BUFFER_MAX_SIZE 50
 
