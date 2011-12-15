@@ -64,16 +64,14 @@ void terminal_put_chat_at(int x, int y, char ch)
 
 void terminal_draw_horizontal_line(int x, int y, int lenght, char ch)
 {
-    int i;
-    for(i = y; i <= lenght; i++) {
+    for(int i = y; i <= lenght; i++) {
         terminal_put_chat_at(x, i, ch);
     }
 }
 
 void terminal_draw_vertical_line(int x, int y, int lenght, char ch)
 {
-    int i;
-    for(i = x; i <= lenght; i++) {
+    for(int i = x; i <= lenght; i++) {
         terminal_put_chat_at(i, y, ch);
     }
 }
