@@ -39,15 +39,16 @@ int main(void)
 
     terminal_clear();
     terminal_get_size(&row, &col);
-    printf("Message from main()\n");
-    printf("row: %hd col %hd\n", row, col);
+    terminal_draw_horizontal_line(1, 1, 20, '-');
+    terminal_draw_vertical_line(2, 1, 20, '|');
+    terminal_put_chat_at(1, 1, '+');
 
     while (true) {
         res = buffer_read(&input_buffer, local_buffer);
-        if (res > 0) {
-            printf("%d\n", atoi(local_buffer));
-            printf("%d\n", res);
-        }
+//         if (res > 0) {
+//             printf("%d\n", atoi(local_buffer));
+//             printf("%d\n", res);
+//         }
     }
 
     exit(EXIT_SUCCESS);

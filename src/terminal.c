@@ -55,3 +55,25 @@ void terminal_clear(void)
 {
     fputs("\033[2J\033[1;1H", stdout);
 }
+
+void terminal_put_chat_at(int x, int y, char ch)
+{
+    fprintf(stdout, "\033[%d;%dH%c", x, y, ch);
+    fflush(stdout);
+}
+
+void terminal_draw_horizontal_line(int x, int y, int lenght, char ch)
+{
+    int i;
+    for(i = y; i <= lenght; i++) {
+        terminal_put_chat_at(x, i, ch);
+    }
+}
+
+void terminal_draw_vertical_line(int x, int y, int lenght, char ch)
+{
+    int i;
+    for(i = x; i <= lenght; i++) {
+        terminal_put_chat_at(i, y, ch);
+    }
+}
