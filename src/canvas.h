@@ -1,7 +1,9 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-typedef char canvas_element_t;
+#include <wchar.h>
+
+typedef wchar_t canvas_element_t;
 typedef struct canvas_type *Canvas;
 
 Canvas canvas_create(int rows, int cols);

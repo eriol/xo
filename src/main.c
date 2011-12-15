@@ -1,3 +1,4 @@
+#include <locale.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -25,6 +26,7 @@ void * input_thread(void *arg)
 
 int main(void)
 {
+    setlocale(LC_ALL,"");
     pthread_t thr;
     int s, res;
     unsigned short rows, cols;
@@ -45,12 +47,19 @@ int main(void)
 
     canvas = canvas_create(rows, cols);
 
-    printf("canvas rows %d\n", canvas_get_rows(canvas));
-    printf("canvas cols %d\n", canvas_get_cols(canvas));
+//     printf("canvas rows %d\n", canvas_get_rows(canvas));
+//     printf("canvas cols %d\n", canvas_get_cols(canvas));
 //     printf("%c\n", canvas_get_element(canvas, 1, 1));
 //     canvas_set_element(canvas, 1, 1, 'x');
-    canvas_horizontal_line(canvas, 0, 0, 200, '-');
-    canvas_horizontal_line(canvas, rows - 1, 0, 200, '-');
+//     canvas_horizontal_line(canvas, 0, 0, 200, '-');
+//     canvas_horizontal_line(canvas, rows - 1, 0, 200, '-');
+//     canvas_vertical_line(canvas, 0, 0, 200, '|');
+//     canvas_vertical_line(canvas, 0, cols - 1, 200, '|');
+
+    canvas_element_t d[] = L"♠♣♥";
+    canvas_box(canvas, 0, 0, rows - 1, cols - 1, d);
+    wmemcpy(d, L"-|+", 3);
+    canvas_box(canvas, 1, 1, rows - 2, cols - 2, d);
     canvas_draw(canvas);
     canvas_destroy(canvas);
 

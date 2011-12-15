@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
-
+#include <wchar.h>
 
 char getch(void) {
     char buf = 0;
@@ -53,23 +53,23 @@ int terminal_get_size(unsigned short *row, unsigned short *col)
 
 void terminal_clear(void)
 {
-    fputs("\033[2J\033[1;1H", stdout);
+    fwprintf( stdout, L"\033[2J\033[1;1H");
 }
 
-void terminal_put_chat_at(int x, int y, char ch)
+void terminal_put_chat_at(int x, int y, wchar_t ch)
 {
-    fprintf(stdout, "\033[%d;%dH%c", x, y, ch);
+    fwprintf(stdout, L"\033[%d;%dH%c", x, y, ch);
     fflush(stdout);
 }
 
-void terminal_draw_horizontal_line(int x, int y, int lenght, char ch)
+void terminal_draw_horizontal_line(int x, int y, int lenght, wchar_t ch)
 {
     for(int i = y; i <= lenght; i++) {
         terminal_put_chat_at(x, i, ch);
     }
 }
 
-void terminal_draw_vertical_line(int x, int y, int lenght, char ch)
+void terminal_draw_vertical_line(int x, int y, int lenght, wchar_t ch)
 {
     for(int i = x; i <= lenght; i++) {
         terminal_put_chat_at(i, y, ch);

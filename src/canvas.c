@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <wchar.h>
 
 #include "canvas.h"
 
@@ -46,7 +47,7 @@ Canvas canvas_create(int rows, int cols)
     // Initializing canvas' elements
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            c->grid_elements[i][j] = '\0';
+            c->grid_elements[i][j] = L'\0';
         }
     }
 
@@ -133,7 +134,7 @@ void canvas_draw(Canvas c)
         for (int y = 0; y < c->cols; y++) {
             // Escape sequence start counting from 1 so x+1 and y+1 are needed
             // to fix coordinates
-            fprintf(stdout, "\033[%d;%dH%c", x+1, y+1, c->grid_elements[x][y]);
+            fwprintf(stdout, L"\033[%d;%dH%lc", x+1, y+1, c->grid_elements[x][y]);
         }
     }
     fflush(stdout);
