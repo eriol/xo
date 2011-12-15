@@ -27,7 +27,7 @@ int main(void)
 {
     pthread_t thr;
     int s, res;
-    unsigned short row, col;
+    unsigned short rows, cols;
     buf_element_t local_buffer[BUFFER_MAX_SIZE];
 
     buffer_init(&input_buffer, BUFFER_MAX_SIZE);
@@ -38,28 +38,30 @@ int main(void)
 //     }
 
     terminal_clear();
-    terminal_get_size(&row, &col);
+    terminal_get_size(&rows, &cols);
 //     terminal_draw_horizontal_line(1, 1, 20, '-');
 //     terminal_draw_vertical_line(2, 1, 20, '|');
 //     terminal_put_chat_at(1, 1, '+');
 
-    canvas = canvas_create(2, 2);
+    canvas = canvas_create(rows, cols);
 
     printf("canvas rows %d\n", canvas_get_rows(canvas));
     printf("canvas cols %d\n", canvas_get_cols(canvas));
-    printf("%c\n", canvas_get_element(canvas, 1, 1));
-    canvas_set_element(canvas, 1, 1, 'x');
-    printf("%c\n", canvas_get_element(canvas, 1, 1));
-
+//     printf("%c\n", canvas_get_element(canvas, 1, 1));
+//     canvas_set_element(canvas, 1, 1, 'x');
+    canvas_horizontal_line(canvas, 0, 0, 200, '-');
+    canvas_horizontal_line(canvas, rows - 1, 0, 200, '-');
+    canvas_draw(canvas);
     canvas_destroy(canvas);
 
-//     while (true) {
+    while (true) {
+        sleep(10);
 //         res = buffer_read(&input_buffer, local_buffer);
 //         if (res > 0) {
 //             printf("%d\n", atoi(local_buffer));
 //             printf("%d\n", res);
 //         }
-//     }
+    }
 
     exit(EXIT_SUCCESS);
 }

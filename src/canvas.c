@@ -85,3 +85,27 @@ void canvas_set_element(Canvas c, int x, int y, canvas_element_t e)
 {
     c->grid_elements[x][y] = e;
 }
+
+void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
+                            canvas_element_t e)
+{
+    if (lenght > c->cols) {
+        lenght = c->cols;
+    }
+
+    for(int i = y; i <= lenght; i++) {
+        canvas_set_element(c, x, i, e);
+    }
+}
+
+void canvas_draw(Canvas c)
+{
+    for (int x = 0; x < c->rows; x++) {
+        for (int y = 0; y < c->cols; y++) {
+            // Escape sequence start counting from 1 so x+1 and y+1 are needed
+            // to fix coordinates
+            fprintf(stdout, "\033[%d;%dH%c", x+1, y+1, c->grid_elements[x][y]);
+        }
+    }
+    fflush(stdout);
+}
