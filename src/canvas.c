@@ -110,6 +110,23 @@ void canvas_vertical_line(Canvas c, int x, int y, int lenght,
     }
 }
 
+void canvas_box(Canvas c, int x1, int y1, int x2, int y2, canvas_element_t d[3])
+{
+        // Up
+        canvas_horizontal_line(c, x1, y1, y2, d[0]);
+        // Bottom
+        canvas_horizontal_line(c, x2, y1, y2, d[0]);
+        // Left
+        canvas_vertical_line(c, x1, y1, x2, d[1]);
+        // Right
+        canvas_vertical_line(c, x1, y2, x2, d[1]);
+        //Corners clockwise order
+        canvas_set_element(c, x1, y1, d[2]);
+        canvas_set_element(c, x1, y2, d[2]);
+        canvas_set_element(c, x2, y2, d[2]);
+        canvas_set_element(c, x2, y1, d[2]);
+}
+
 void canvas_draw(Canvas c)
 {
     for (int x = 0; x < c->rows; x++) {
