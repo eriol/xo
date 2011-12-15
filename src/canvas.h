@@ -12,6 +12,8 @@ canvas_element_t canvas_get_element(Canvas c, int x, int y);
 void canvas_set_element(Canvas c, int x, int y, canvas_element_t e);
 void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
                             canvas_element_t e);
+void canvas_vertical_line(Canvas c, int x, int y, int lenght,
+                          canvas_element_t e);
 void canvas_draw(Canvas c);
 
 #endif
