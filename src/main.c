@@ -6,12 +6,12 @@
 
 #include <unistd.h>
 
+#include "canvas.h"
 #include "monitorbuffer.h"
 #include "terminal.h"
 
-
-
 buffer_t input_buffer;
+Canvas canvas;
 
 void * input_thread(void *arg)
 {
