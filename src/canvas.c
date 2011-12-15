@@ -16,8 +16,10 @@ Canvas canvas_create(int rows, int cols)
         perror("canvas_create: can't create canvas");
         return NULL;
     }
+
     c->rows = rows;
     c->cols = cols;
+
     // Allocating rows array for grid_elements
     c->grid_elements = malloc(rows * sizeof(canvas_element_t *));
 
@@ -38,6 +40,14 @@ Canvas canvas_create(int rows, int cols)
             }
             return NULL;
         }
+
+    }
+
+    // Initializing canvas' elements
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            c->grid_elements[i][j] = '\0';
+        }
     }
 
     return c;
@@ -54,4 +64,24 @@ void canvas_destroy(Canvas c)
     free(c->grid_elements);
     // Destroy!
     free(c);
+}
+
+int canvas_get_rows(Canvas c)
+{
+    return c->rows;
+}
+
+int canvas_get_cols(Canvas c)
+{
+    return c->cols;
+}
+
+canvas_element_t canvas_get_element(Canvas c, int x, int y)
+{
+    return c->grid_elements[x][y];
+}
+
+void canvas_set_element(Canvas c, int x, int y, canvas_element_t e)
+{
+    c->grid_elements[x][y] = e;
 }
