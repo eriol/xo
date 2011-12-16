@@ -42,7 +42,7 @@ int main(void)
 
     terminal_get_size(&rows, &cols);
     canvas = canvas_create(rows, cols);
-    xo_intro_screen(canvas);
+    xo_intro(canvas);
 
     while (true) {
         sleep(10);

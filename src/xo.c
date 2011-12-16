@@ -4,12 +4,20 @@
 
 #define INTRO_SPEED 100000 /* microseconds */
 
-void xo_layout(Canvas c)
+void xo_background_box(Canvas c)
 {
     canvas_element_t d[] = L"♠♣☮";
-    int sep = canvas_get_rows(c) - 7;
     canvas_box(c, 0, 0, canvas_get_rows(c) - 1, canvas_get_cols(c) - 1, d);
-    canvas_horizontal_line(c, sep, 1, canvas_get_cols(c) - 1, L'⣿');
+}
+
+void xo_game_layout(Canvas c)
+{
+    int horizontal_line_x = canvas_get_rows(c) - 7;
+    int last_col = canvas_get_cols(c) - 1;
+
+    xo_background_box(c);
+    canvas_horizontal_line(c, horizontal_line_x, 1, canvas_get_cols(c) - 1,
+                           L'⣿');
 }
 
 void xo_x_creature(Canvas c, int x, int y)
@@ -38,13 +46,23 @@ void xo_o_creature(Canvas c, int x, int y)
     }
 }
 
-void xo_intro_screen(Canvas c)
+void xo_intro(Canvas c)
 {
-    for (int i = 0; i < canvas_get_cols(c); i++) {
+    int cols = canvas_get_cols(c);
+    int rows = canvas_get_rows(c);
+    int creature_lenght = 5;
+    int creature_height = 5;
+    int multi_creature_lenght = 8;
+
+    for (int i = 0; i < cols + multi_creature_lenght; i++) {
         canvas_clean(c);
-        xo_layout(c);
-        xo_x_creature(c, 2, 2 + i);
-        xo_o_creature(c, 2, 7 + i);
+        // Forward
+        xo_x_creature(c, 2, 0 - multi_creature_lenght + i);
+        xo_o_creature(c, 2, creature_lenght - multi_creature_lenght + i);
+        //Backward
+        xo_o_creature(c, 2 + creature_height, cols - 2 - i);
+        xo_x_creature(c, 2 + creature_height, cols - 2 + creature_lenght - i );
+        xo_background_box(c);
         canvas_draw(c);
         usleep(INTRO_SPEED);
     }
