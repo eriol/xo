@@ -134,7 +134,7 @@ void canvas_draw(Canvas c)
         for (int y = 0; y < c->cols; y++) {
             // Terminal starts counting from 1 so x+1 and y+1 are needed to fix
             // coordinates
-            fwprintf(stdout, L"\033[%d;%dH%lc", x+1, y+1,
+            fwprintf(stdout, L"\033[%d;%dH%lc", x + 1, y + 1,
                      c->grid_elements[x][y]);
         }
     }
@@ -142,9 +142,17 @@ void canvas_draw(Canvas c)
 }
 
 
-void canvas_x_creature(Canvas c)
+void canvas_x_creature(Canvas c, int x, int y)
 {
-    
+    canvas_element_t x_creature[5][5] = {L"✖   ✖",
+                                         L" ✖ ✖ ",
+                                         L"  ✖  ",
+                                         L" ✖ ✖ ",
+                                         L"✖   ✖"};
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++)
+            canvas_set_element(c, i + x, j + y, x_creature[i][j]);
+    }
 }
 
 

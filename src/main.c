@@ -58,6 +58,7 @@ int main(void)
 
 
     canvas_layout(canvas);
+    canvas_x_creature(canvas, 2, 2);
 
     canvas_draw(canvas);
     canvas_destroy(canvas);
