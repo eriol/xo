@@ -20,4 +20,9 @@ void canvas_box(Canvas c, int x1, int y1, int x2, int y2,
                 canvas_element_t d[3]);
 void canvas_draw(Canvas c);
 
+void canvas_x_creature(Canvas c);
+void canvas_o_creature(Canvas c);
+
+void canvas_layout(Canvas c);
+
 #endif

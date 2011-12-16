@@ -132,10 +132,31 @@ void canvas_draw(Canvas c)
 {
     for (int x = 0; x < c->rows; x++) {
         for (int y = 0; y < c->cols; y++) {
-            // Escape sequence start counting from 1 so x+1 and y+1 are needed
-            // to fix coordinates
-            fwprintf(stdout, L"\033[%d;%dH%lc", x+1, y+1, c->grid_elements[x][y]);
+            // Terminal starts counting from 1 so x+1 and y+1 are needed to fix
+            // coordinates
+            fwprintf(stdout, L"\033[%d;%dH%lc", x+1, y+1,
+                     c->grid_elements[x][y]);
         }
     }
     fflush(stdout);
+}
+
+
+void canvas_x_creature(Canvas c)
+{
+    
+}
+
+
+void canvas_o_creature(Canvas c)
+{
+    
+}
+
+void canvas_layout(Canvas c)
+{
+    canvas_element_t d[] = L"♠♣☮";
+    int sep = c->rows - (int) (c->rows * 0.28);
+    canvas_box(c, 0, 0, c->rows - 1, c->cols - 1, d);
+    canvas_horizontal_line(c, sep, 1, c->cols - 1, L'⣿');
 }

@@ -56,10 +56,9 @@ int main(void)
 //     canvas_vertical_line(canvas, 0, 0, 200, '|');
 //     canvas_vertical_line(canvas, 0, cols - 1, 200, '|');
 
-    canvas_element_t d[] = L"♠♣♥";
-    canvas_box(canvas, 0, 0, rows - 1, cols - 1, d);
-    wmemcpy(d, L"-|+", 3);
-    canvas_box(canvas, 1, 1, rows - 2, cols - 2, d);
+
+    canvas_layout(canvas);
+
     canvas_draw(canvas);
     canvas_destroy(canvas);
 
