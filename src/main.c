@@ -57,11 +57,14 @@ int main(void)
 //     canvas_vertical_line(canvas, 0, cols - 1, 200, '|');
 
 
-    canvas_layout(canvas);
-    canvas_x_creature(canvas, 2, 2);
-
-    canvas_draw(canvas);
-    canvas_destroy(canvas);
+    for (int i = 0; i < canvas_get_cols(canvas); i++) {
+        canvas_clean(canvas);
+        xo_layout(canvas);
+        xo_x_creature(canvas, 2, 2 + i);
+        xo_o_creature(canvas, 2, 7 + i);
+        canvas_draw(canvas);
+        usleep(100000);
+    }
 
     while (true) {
         sleep(10);
@@ -72,5 +75,6 @@ int main(void)
 //         }
     }
 
+    canvas_destroy(canvas);
     exit(EXIT_SUCCESS);
 }
