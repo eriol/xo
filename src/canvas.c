@@ -44,15 +44,19 @@ Canvas canvas_create(int rows, int cols)
 
     }
 
-    // Initializing canvas' elements
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            c->grid_elements[i][j] = L'\0';
-        }
-    }
+    canvas_clean(c);
 
     return c;
 
+}
+
+void canvas_clean(Canvas c)
+{
+    for (int i = 0; i < c->rows; i++) {
+        for (int j = 0; j < c->cols; j++) {
+            c->grid_elements[i][j] = L' ';
+        }
+    }
 }
 
 void canvas_destroy(Canvas c)
@@ -139,32 +143,4 @@ void canvas_draw(Canvas c)
         }
     }
     fflush(stdout);
-}
-
-
-void canvas_x_creature(Canvas c, int x, int y)
-{
-    canvas_element_t x_creature[5][5] = {L"✖   ✖",
-                                         L" ✖ ✖ ",
-                                         L"  ✖  ",
-                                         L" ✖ ✖ ",
-                                         L"✖   ✖"};
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++)
-            canvas_set_element(c, i + x, j + y, x_creature[i][j]);
-    }
-}
-
-
-void canvas_o_creature(Canvas c)
-{
-    
-}
-
-void canvas_layout(Canvas c)
-{
-    canvas_element_t d[] = L"♠♣☮";
-    int sep = c->rows - (int) (c->rows * 0.28);
-    canvas_box(c, 0, 0, c->rows - 1, c->cols - 1, d);
-    canvas_horizontal_line(c, sep, 1, c->cols - 1, L'⣿');
 }
