@@ -13,7 +13,6 @@ void xo_background_box(Canvas c)
 void xo_game_layout(Canvas c)
 {
     int horizontal_line_x = canvas_get_rows(c) - 7;
-    int last_col = canvas_get_cols(c) - 1;
 
     xo_background_box(c);
     canvas_horizontal_line(c, horizontal_line_x, 1, canvas_get_cols(c) - 1,
