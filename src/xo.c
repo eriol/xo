@@ -1,4 +1,8 @@
+#include <unistd.h>
+
 #include "xo.h"
+
+#define INTRO_SPEED 100000 /* microseconds */
 
 void xo_layout(Canvas c)
 {
@@ -31,5 +35,17 @@ void xo_o_creature(Canvas c, int x, int y)
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++)
             canvas_set_element(c, i + x, j + y, x_creature[i][j]);
+    }
+}
+
+void xo_intro_screen(Canvas c)
+{
+    for (int i = 0; i < canvas_get_cols(c); i++) {
+        canvas_clean(c);
+        xo_layout(c);
+        xo_x_creature(c, 2, 2 + i);
+        xo_o_creature(c, 2, 7 + i);
+        canvas_draw(c);
+        usleep(INTRO_SPEED);
     }
 }

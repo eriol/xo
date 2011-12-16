@@ -10,6 +10,7 @@
 #include "canvas.h"
 #include "monitorbuffer.h"
 #include "terminal.h"
+#include "xo.h"
 
 buffer_t input_buffer;
 Canvas canvas;
@@ -39,40 +40,12 @@ int main(void)
 //         perror("Error in pthread_create.");
 //     }
 
-    terminal_clear();
     terminal_get_size(&rows, &cols);
-//     terminal_draw_horizontal_line(1, 1, 20, '-');
-//     terminal_draw_vertical_line(2, 1, 20, '|');
-//     terminal_put_chat_at(1, 1, '+');
-
     canvas = canvas_create(rows, cols);
-
-//     printf("canvas rows %d\n", canvas_get_rows(canvas));
-//     printf("canvas cols %d\n", canvas_get_cols(canvas));
-//     printf("%c\n", canvas_get_element(canvas, 1, 1));
-//     canvas_set_element(canvas, 1, 1, 'x');
-//     canvas_horizontal_line(canvas, 0, 0, 200, '-');
-//     canvas_horizontal_line(canvas, rows - 1, 0, 200, '-');
-//     canvas_vertical_line(canvas, 0, 0, 200, '|');
-//     canvas_vertical_line(canvas, 0, cols - 1, 200, '|');
-
-
-    for (int i = 0; i < canvas_get_cols(canvas); i++) {
-        canvas_clean(canvas);
-        xo_layout(canvas);
-        xo_x_creature(canvas, 2, 2 + i);
-        xo_o_creature(canvas, 2, 7 + i);
-        canvas_draw(canvas);
-        usleep(100000);
-    }
+    xo_intro_screen(canvas);
 
     while (true) {
         sleep(10);
-//         res = buffer_read(&input_buffer, local_buffer);
-//         if (res > 0) {
-//             printf("%d\n", atoi(local_buffer));
-//             printf("%d\n", res);
-//         }
     }
 
     canvas_destroy(canvas);
