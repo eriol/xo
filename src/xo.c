@@ -50,6 +50,7 @@ void xo_intro(Canvas c)
 {
     int cols = canvas_get_cols(c);
     int rows = canvas_get_rows(c);
+    int center = (int) (rows / 2);
     int creature_lenght = 5;
     int creature_height = 5;
     int multi_creature_lenght = 8;
@@ -57,11 +58,15 @@ void xo_intro(Canvas c)
     for (int i = 0; i < cols + multi_creature_lenght; i++) {
         canvas_clean(c);
         // Forward
-        xo_x_creature(c, 2, 0 - multi_creature_lenght + i);
-        xo_o_creature(c, 2, creature_lenght - multi_creature_lenght + i);
+        xo_x_creature(c,
+                      center - creature_height - 2,
+                      0 - multi_creature_lenght + i);
+        xo_o_creature(c,
+                      center - creature_height - 2,
+                      creature_lenght - multi_creature_lenght + i);
         //Backward
-        xo_o_creature(c, 2 + creature_height, cols - 2 - i);
-        xo_x_creature(c, 2 + creature_height, cols - 2 + creature_lenght - i );
+        xo_o_creature(c, center + 2, cols - 2 - i);
+        xo_x_creature(c, center + 2, cols - 2 + creature_lenght - i );
         xo_background_box(c);
         canvas_draw(c);
         usleep(INTRO_SPEED);
