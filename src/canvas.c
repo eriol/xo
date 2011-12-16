@@ -88,7 +88,9 @@ canvas_element_t canvas_get_element(Canvas c, int x, int y)
 
 void canvas_set_element(Canvas c, int x, int y, canvas_element_t e)
 {
-    c->grid_elements[x][y] = e;
+    if (x <= c->rows && x >= 0 && y <= c->cols && y >= 0) {
+        c->grid_elements[x][y] = e;
+    }
 }
 
 void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
