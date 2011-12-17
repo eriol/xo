@@ -43,17 +43,13 @@ int main(void)
     terminal_get_size(&rows, &cols);
     canvas = canvas_create(rows, cols);
     collision = canvas_create(rows, cols);
-    xo_intro(canvas);
-//     xo_game_layout(canvas, collision);
+//     xo_intro(canvas);
+    xo_game_layout(canvas, collision);
+    xo_creature(canvas, collision, 1, 1, true);
 
-//     xo_creature(canvas, 0, 0, true);
-
-//     xo_creature 
     canvas_draw(canvas);
 //     canvas_draw(collision);
 
-    
-    
     while (true) {
         sleep(10);
     }

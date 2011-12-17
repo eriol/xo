@@ -27,7 +27,7 @@ void xo_game_layout(Canvas c, Canvas o)
     }
 }
 
-void xo_creature(Canvas c, int x, int y, bool creature_x)
+void xo_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
 {
     canvas_element_t x_creature[5][5] = { L"✖   ✖",
                                           L" ⥀ ⥁ ",
@@ -50,6 +50,9 @@ void xo_creature(Canvas c, int x, int y, bool creature_x)
                 e = o_creature[i][j];
             }
             canvas_set_element(c, i + x, j + y, e);
+            if (o != NULL) {
+                canvas_set_element(o, i + x, j + y, obstacle_mark);
+            }
         }
     }
 }
@@ -66,17 +69,17 @@ void xo_intro(Canvas c)
     for (int i = 0; i < cols + multi_creature_lenght; i++) {
         canvas_clean(c);
         // Forward
-        xo_creature(c,
+        xo_creature(c, NULL,
                     center - creature_height - 2,
                     0 - multi_creature_lenght + i,
                     true);
-        xo_creature(c,
+        xo_creature(c, NULL,
                     center - creature_height - 2,
                     creature_lenght - multi_creature_lenght + i,
                     false);
         //Backward
-        xo_creature(c, center + 2, cols - 2 - i, false);
-        xo_creature(c, center + 2, cols - 2 + creature_lenght - i, true);
+        xo_creature(c, NULL, center + 2, cols - 2 - i, false);
+        xo_creature(c, NULL, center + 2, cols - 2 + creature_lenght - i, true);
         xo_background_intro(c);
         canvas_draw(c);
         usleep(INTRO_SPEED);
