@@ -44,9 +44,9 @@ int main(void)
     canvas = canvas_create(rows, cols);
     collision = canvas_create(rows, cols);
 //     xo_intro(canvas);
-
     xo_game_layout(canvas, collision);
-    canvas_draw(canvas);
+//     canvas_draw(canvas);
+    canvas_draw(collision);
 
     
     

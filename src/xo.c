@@ -4,23 +4,26 @@
 
 #define INTRO_SPEED 100000 /* microseconds */
 
-canvas_element_t collision_mark = L'☠';
+canvas_element_t obstacle_mark = L'☠';
 
 void xo_background_box(Canvas c, Canvas o)
 {
     canvas_border(c, L"♠♣☮");
-    if (o != NULL) { // Collision detection active
+    if (o != NULL) {
         canvas_border(o, L"☠☠☠");
     }
 }
 
 void xo_game_layout(Canvas c, Canvas o)
 {
-    int horizontal_line_x = canvas_get_rows(c) - 7;
+    int x = canvas_get_rows(c) - 7;
+    int y = canvas_get_cols(c) - 1;
 
     xo_background_box(c, o);
-    canvas_horizontal_line(c, horizontal_line_x, 1, canvas_get_cols(c) - 1,
-                           L'⣿');
+    canvas_horizontal_line(c, x, 1, y, L'⣿');
+    if (o != NULL) {
+        canvas_box_fill(o, x, 1, canvas_get_rows(c) - 1, y , obstacle_mark);
+    }
 }
 
 void xo_x_creature(Canvas c, int x, int y)

@@ -134,6 +134,16 @@ void canvas_box(Canvas c, int x1, int y1, int x2, int y2, canvas_element_t d[3])
         canvas_set_element(c, x2, y1, d[2]);
 }
 
+void canvas_box_fill(Canvas c, int x1, int y1, int x2, int y2,
+                     canvas_element_t d)
+{
+    for (int i = x1; i < x2; i++) {
+        for (int j = y1; j < y2; j++) {
+            canvas_set_element(c, i, j, d);
+        }
+    }
+}
+
 void canvas_border(Canvas c, canvas_element_t d[3])
 {
     canvas_box(c, 0, 0, c->rows - 1, c->cols - 1, d);
