@@ -4,17 +4,24 @@
 
 #define INTRO_SPEED 100000 /* microseconds */
 
-void xo_background_box(Canvas c)
+canvas_element_t collision_mark = L'☠';
+
+void xo_background_box(Canvas c, Canvas o)
 {
     canvas_element_t d[] = L"♠♣☮";
     canvas_box(c, 0, 0, canvas_get_rows(c) - 1, canvas_get_cols(c) - 1, d);
+
+    if (o != NULL) { // Collision detection active
+        canvas_box(o, 0, 0, canvas_get_rows(c) - 1, canvas_get_cols(c) - 1,
+                   L"☠☠☠");
+    }
 }
 
-void xo_game_layout(Canvas c)
+void xo_game_layout(Canvas c, Canvas o)
 {
     int horizontal_line_x = canvas_get_rows(c) - 7;
 
-    xo_background_box(c);
+    xo_background_box(c, o);
     canvas_horizontal_line(c, horizontal_line_x, 1, canvas_get_cols(c) - 1,
                            L'⣿');
 }
@@ -66,7 +73,7 @@ void xo_intro(Canvas c)
         //Backward
         xo_o_creature(c, center + 2, cols - 2 - i);
         xo_x_creature(c, center + 2, cols - 2 + creature_lenght - i );
-        xo_background_box(c);
+        xo_background_intro(c);
         canvas_draw(c);
         usleep(INTRO_SPEED);
     }

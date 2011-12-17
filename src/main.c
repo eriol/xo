@@ -13,7 +13,6 @@
 #include "xo.h"
 
 buffer_t input_buffer;
-Canvas canvas;
 
 void * input_thread(void *arg)
 {
@@ -28,6 +27,7 @@ void * input_thread(void *arg)
 int main(void)
 {
     setlocale(LC_ALL,"");
+    Canvas canvas, collision;
     pthread_t thr;
     int s, res;
     unsigned short rows, cols;
@@ -42,8 +42,14 @@ int main(void)
 
     terminal_get_size(&rows, &cols);
     canvas = canvas_create(rows, cols);
-    xo_intro(canvas);
+    collision = canvas_create(rows, cols);
+//     xo_intro(canvas);
 
+    xo_game_layout(canvas, collision);
+    canvas_draw(canvas);
+
+    
+    
     while (true) {
         sleep(10);
     }
