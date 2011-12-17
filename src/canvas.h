@@ -19,6 +19,7 @@ void canvas_vertical_line(Canvas c, int x, int y, int lenght,
                           canvas_element_t e);
 void canvas_box(Canvas c, int x1, int y1, int x2, int y2,
                 canvas_element_t d[3]);
+void canvas_border(Canvas c, canvas_element_t d[3]);
 void canvas_draw(Canvas c);
 
 #endif

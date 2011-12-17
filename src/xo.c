@@ -8,12 +8,9 @@ canvas_element_t collision_mark = L'☠';
 
 void xo_background_box(Canvas c, Canvas o)
 {
-    canvas_element_t d[] = L"♠♣☮";
-    canvas_box(c, 0, 0, canvas_get_rows(c) - 1, canvas_get_cols(c) - 1, d);
-
+    canvas_border(c, L"♠♣☮");
     if (o != NULL) { // Collision detection active
-        canvas_box(o, 0, 0, canvas_get_rows(c) - 1, canvas_get_cols(c) - 1,
-                   L"☠☠☠");
+        canvas_border(o, L"☠☠☠");
     }
 }
 
