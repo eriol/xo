@@ -74,7 +74,7 @@ void xo_insert_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
         L"  ●  ",
         L" ◐ ◑ ",
         L"●   ●",
-        L" ●⚻● ",
+        L" ●⏟● ",
         L"  ●  "
     };
 
@@ -126,4 +126,26 @@ int xo_insert_creature_random(Canvas c, Canvas o, bool creature_x)
     }
 
     return 0;
+}
+
+int xo_insert_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
+{
+    int inserted, res, current_try;
+    int max_tries = 5;
+
+    inserted = res = current_try = 0;
+
+    for (int i = 0; i < n; i++) {
+        while(current_try < max_tries) {
+            res = xo_insert_creature_random(c, o, creature_x);
+            if (res) {
+                inserted++;
+                break;
+            } else {
+                current_try++;
+            }
+        }
+    }
+
+    return inserted;
 }

@@ -26,7 +26,7 @@ void * input_thread(void *arg)
 
 int main(void)
 {
-    setlocale(LC_ALL,"");
+    setlocale(LC_ALL, "");
     Canvas canvas, collision;
     pthread_t thr;
     int s, res;
@@ -43,9 +43,13 @@ int main(void)
     terminal_get_size(&rows, &cols);
     canvas = canvas_create(rows, cols);
     collision = canvas_create(rows, cols);
+
 //     xo_intro(canvas);
-    xo_game_layout(canvas, collision);
-    xo_creature(canvas, collision, 1, 1, true);
+    xo_draw_game_layout(canvas, collision);
+
+
+    res = xo_insert_bunch_creatures(canvas, collision, true, 15);
+    res = xo_insert_bunch_creatures(canvas, collision, false, 15);
 
     canvas_draw(canvas);
 //     canvas_draw(collision);
@@ -54,6 +58,6 @@ int main(void)
         sleep(10);
     }
 
-    canvas_destroy(canvas);
-    exit(EXIT_SUCCESS);
+//     canvas_destroy(canvas);
+//     exit(EXIT_SUCCESS);
 }
