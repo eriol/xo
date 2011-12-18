@@ -153,7 +153,7 @@ void canvas_draw(Canvas c)
 {
     for (int x = 0; x < c->rows; x++) {
         for (int y = 0; y < c->cols; y++) {
-            // Terminal starts counting from 1 so x+1 and y+1 are needed to fix
+            // Terminal starts from 1 so x+1 and y+1 are needed to fix
             // coordinates
             fwprintf(stdout, L"\033[%d;%dH%lc", x + 1, y + 1,
                      c->grid_elements[x][y]);
