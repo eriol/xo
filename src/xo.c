@@ -12,14 +12,6 @@
 
 canvas_element_t obstacle_mark = L'☠';
 
-void xo_draw_background_box(Canvas c, Canvas o)
-{
-    canvas_border(c, L"♠♣☮");
-    if (o != NULL) {
-        canvas_border(o, L"☠☠☠");
-    }
-}
-
 void xo_intro(Canvas c)
 {
     int cols = canvas_get_cols(c);
@@ -45,6 +37,14 @@ void xo_intro(Canvas c)
         xo_draw_background_intro(c);
         canvas_draw(c);
         usleep(INTRO_SPEED);
+    }
+}
+
+void xo_draw_background_box(Canvas c, Canvas o)
+{
+    canvas_border(c, L"♠♣☮");
+    if (o != NULL) {
+        canvas_border(o, L"☠☠☠");
     }
 }
 
