@@ -12,7 +12,7 @@
 
 canvas_element_t obstacle_mark = L'☠';
 
-void xo_background_box(Canvas c, Canvas o)
+void xo_draw_background_box(Canvas c, Canvas o)
 {
     canvas_border(c, L"♠♣☮");
     if (o != NULL) {
@@ -30,36 +30,37 @@ void xo_intro(Canvas c)
     for (int i = 0; i < cols + multi_creature_lenght; i++) {
         canvas_clean(c);
         // Forward
-        xo_creature(c, NULL,
-                    center - CREATURE_SIZE_Y - 2,
-                    0 - multi_creature_lenght + i,
-                    true);
-        xo_creature(c, NULL,
-                    center - CREATURE_SIZE_X - 2,
-                    CREATURE_SIZE_X - multi_creature_lenght + i,
-                    false);
+        xo_insert_creature(c, NULL,
+                           center - CREATURE_SIZE_Y - 2,
+                           0 - multi_creature_lenght + i,
+                           true);
+        xo_insert_creature(c, NULL,
+                           center - CREATURE_SIZE_X - 2,
+                           CREATURE_SIZE_X - multi_creature_lenght + i,
+                           false);
         //Backward
-        xo_creature(c, NULL, center + 2, cols - 2 - i, false);
-        xo_creature(c, NULL, center + 2, cols - 2 + CREATURE_SIZE_X - i, true);
-        xo_background_intro(c);
+        xo_insert_creature(c, NULL, center + 2, cols - 2 - i, false);
+        xo_insert_creature(c, NULL, center + 2, cols - 2 + CREATURE_SIZE_X - i,
+                           true);
+        xo_draw_background_intro(c);
         canvas_draw(c);
         usleep(INTRO_SPEED);
     }
 }
 
-void xo_game_layout(Canvas c, Canvas o)
+void xo_draw_game_layout(Canvas c, Canvas o)
 {
     int x = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA;
     int y = canvas_get_cols(c) - 1;
 
-    xo_background_box(c, o);
+    xo_draw_background_box(c, o);
     canvas_horizontal_line(c, x, 1, y, L'⣿');
     if (o != NULL) {
         canvas_box_fill(o, x, 1, canvas_get_rows(c) - 1, y , obstacle_mark);
     }
 }
 
-void xo_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
+void xo_insert_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
 {
     canvas_element_t x_creature[CREATURE_SIZE_X][CREATURE_SIZE_Y] = {
         L"✖   ✖",
@@ -107,7 +108,7 @@ static int check_collision(Canvas o, int x, int y)
     return 0;
 }
 
-int xo_insert_creature(Canvas c, Canvas o, bool creature_x)
+int xo_insert_creature_random(Canvas c, Canvas o, bool creature_x)
 {
     int x, y, x_min, y_min, x_max, y_max;
 
@@ -120,6 +121,6 @@ int xo_insert_creature(Canvas c, Canvas o, bool creature_x)
     y = randrange(y_min, y_max);
 
     if (!check_collision(o, x, y)) {
-        xo_creature(c, o, x, y, creature_x);
+        xo_insert_creature(c, o, x, y, creature_x);
     }
 }
