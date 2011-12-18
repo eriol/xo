@@ -100,8 +100,8 @@ void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
         lenght = c->cols;
     }
 
-    for(int i = y; i < lenght; i++) {
-        canvas_set_element(c, x, i, e);
+    for(int i = 0; i < lenght; i++) {
+        canvas_set_element(c, x, y + i, e);
     }
 }
 
@@ -112,8 +112,8 @@ void canvas_vertical_line(Canvas c, int x, int y, int lenght,
         lenght = c->rows;
     }
 
-    for(int i = x; i < lenght; i++) {
-        canvas_set_element(c, i, y, e);
+    for(int i = 0; i < lenght; i++) {
+        canvas_set_element(c, x + i, y, e);
     }
 }
 
