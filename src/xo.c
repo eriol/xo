@@ -52,10 +52,10 @@ void xo_draw_background_box(Canvas c, Canvas o)
 void xo_draw_game_layout(Canvas c, Canvas o)
 {
     int x = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA;
-    int y = canvas_get_cols(c) - 2;
+    int y = canvas_get_cols(c) - 1;
 
     xo_draw_background_box(c, o);
-    canvas_horizontal_line(c, x, 1, y, L'⣿');
+    canvas_horizontal_line(c, x, 1, y - 1, L'⣿');
     if (o != NULL) {
         canvas_box_fill(o, x, 1, canvas_get_rows(c) - 1, y , obstacle_mark);
     }
@@ -94,6 +94,12 @@ void xo_insert_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
             }
         }
     }
+}
+
+void xo_insert_the_chosen_one(Canvas c, Canvas o, bool creature_x)
+{
+    int x = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA + 1;
+    xo_insert_creature(c, o, x, 1, creature_x);
 }
 
 static int check_collision(Canvas o, int x, int y)
@@ -154,6 +160,7 @@ void xo_insert_random_creatures(Canvas c, Canvas o, int n, int *in_xo)
 {
     bool creature;
     int res, current_try;
+    res = current_try = 0;
 
     for (int i = 0; i < n; i++) {
 
@@ -170,3 +177,4 @@ void xo_insert_random_creatures(Canvas c, Canvas o, int n, int *in_xo)
         }
     }
 }
+
