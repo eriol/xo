@@ -108,7 +108,7 @@ static int check_collision(Canvas o, int x, int y)
     return 0;
 }
 
-int xo_insert_creature_random(Canvas c, Canvas o, bool creature_x)
+int xo_insert_creature_random_point(Canvas c, Canvas o, bool creature_x)
 {
     int x, y, x_min, y_min, x_max, y_max;
 
@@ -137,7 +137,7 @@ int xo_insert_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
 
     for (int i = 0; i < n; i++) {
         while(current_try < max_tries) {
-            res = xo_insert_creature_random(c, o, creature_x);
+            res = xo_insert_creature_random_point(c, o, creature_x);
             if (res) {
                 inserted++;
                 break;
