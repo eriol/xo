@@ -1,7 +1,9 @@
 #include <stdbool.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "xo.h"
+#include "utils.h"
 
 #define INTRO_SPEED 100000 /* microseconds */
 #define LAYOUT_BOTTOM_DELTA 7
@@ -61,7 +63,7 @@ void xo_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
 {
     canvas_element_t x_creature[CREATURE_SIZE_X][CREATURE_SIZE_Y] = {
         L"✖   ✖",
-        L" ⥀ ⥁ ",
+        L" ◔ ◔ ",
         L"  ✖  ",
         L" ✖ ✖ ",
         L"✖   ✖"
@@ -71,7 +73,7 @@ void xo_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
         L"  ●  ",
         L" ◐ ◑ ",
         L"●   ●",
-        L" ●⟰● ",
+        L" ●⚻● ",
         L"  ●  "
     };
 
@@ -89,5 +91,35 @@ void xo_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
                 canvas_set_element(o, i + x, j + y, obstacle_mark);
             }
         }
+    }
+}
+
+static int check_collision(Canvas o, int x, int y)
+{
+    for (int i = 0; i < CREATURE_SIZE_X; i++) {
+        for (int j = 0; j < CREATURE_SIZE_Y; j++) {
+            if (canvas_get_element(o, x + i, y + j) == obstacle_mark) {
+                return 1;
+            }
+        }
+    }
+
+    return 0;
+}
+
+int xo_insert_creature(Canvas c, Canvas o, bool creature_x)
+{
+    int x, y, x_min, y_min, x_max, y_max;
+
+    x_min = 1;
+    x_max = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA - CREATURE_SIZE_Y;
+    y_min = 1;
+    y_max = canvas_get_cols(c) - 1 - CREATURE_SIZE_X;
+
+    x = randrange(x_min, x_max);
+    y = randrange(y_min, y_max);
+
+    if (!check_collision(o, x, y)) {
+        xo_creature(c, o, x, y, creature_x);
     }
 }
