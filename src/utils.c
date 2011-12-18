@@ -5,6 +5,8 @@
  * Return a random value between lower_bound and upper_bound.
  * Bounds are inclusive.
  *
+ * Remenber to initialize seed.
+ *
  * @param [in] lower_bound The lower bound
  * @param [in] upper_bound The upper bound
  *
