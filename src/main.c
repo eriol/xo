@@ -29,7 +29,7 @@ int main(void)
     setlocale(LC_ALL, "");
     Canvas canvas, collision;
     pthread_t thr;
-    int s, res;
+    int s, res, inserted_creature[] = {0, 0};
     unsigned short rows, cols;
     buf_element_t local_buffer[BUFFER_MAX_SIZE];
 
@@ -47,9 +47,7 @@ int main(void)
 //     xo_intro(canvas);
     xo_draw_game_layout(canvas, collision);
 
-
-    res = xo_insert_bunch_creatures(canvas, collision, true, 15);
-    res = xo_insert_bunch_creatures(canvas, collision, false, 15);
+    xo_insert_random_creatures(canvas, collision, 20, inserted_creature);
 
     canvas_draw(canvas);
 //     canvas_draw(collision);

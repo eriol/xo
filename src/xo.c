@@ -9,6 +9,7 @@
 #define LAYOUT_BOTTOM_DELTA 7
 #define CREATURE_SIZE_X 5
 #define CREATURE_SIZE_Y 5
+#define MAX_TRIES 5
 
 canvas_element_t obstacle_mark = L'☠';
 
@@ -131,12 +132,11 @@ int xo_insert_creature_random_point(Canvas c, Canvas o, bool creature_x)
 int xo_insert_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
 {
     int inserted, res, current_try;
-    int max_tries = 5;
 
     inserted = res = current_try = 0;
 
     for (int i = 0; i < n; i++) {
-        while(current_try < max_tries) {
+        while(current_try < MAX_TRIES) {
             res = xo_insert_creature_random_point(c, o, creature_x);
             if (res) {
                 inserted++;
@@ -148,4 +148,25 @@ int xo_insert_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
     }
 
     return inserted;
+}
+
+void xo_insert_random_creatures(Canvas c, Canvas o, int n, int *in_xo)
+{
+    bool creature;
+    int res, current_try;
+
+    for (int i = 0; i < n; i++) {
+
+        creature = (bool) randrange(0, 1);
+
+        while(current_try < MAX_TRIES) {
+            res = xo_insert_creature_random_point(c, o, creature);
+            if (res) {
+                in_xo[creature]++;
+                break;
+            } else {
+                current_try++;
+            }
+        }
+    }
 }
