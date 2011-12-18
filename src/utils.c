@@ -1,4 +1,4 @@
-#include <bsd/stdlib.h>
+#include <stdlib.h>
 
 /*!
  * Return a random value between lower_bound and upper_bound.
