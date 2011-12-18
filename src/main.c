@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <unistd.h>
+
 
 #include "canvas.h"
 #include "monitorbuffer.h"
@@ -35,6 +35,9 @@ int main(void)
 
     buffer_init(&input_buffer, BUFFER_MAX_SIZE);
 
+    // Initialize random seed TODO: move on the thread video control
+    srandom(time(NULL));
+
 //     s = pthread_create(&thr, NULL, input_thread, NULL);
 //     if (s != 0) {
 //         perror("Error in pthread_create.");
@@ -46,11 +49,12 @@ int main(void)
 
 //     xo_intro(canvas);
     xo_draw_game_layout(canvas, collision);
-    xo_insert_creature(canvas, collision, 1, 1, true);
-    xo_insert_creature_random_point(canvas, collision, true);
-    xo_insert_random_creatures(canvas, collision, 20, inserted_creature);
-    xo_insert_the_chosen_one(canvas, collision, true);
-    xo_insert_life(canvas, 3);
+//     xo_draw_creature(canvas, collision, 1, 1, true);
+    xo_draw_bunch_creatures(canvas, collision, true, 4);
+//     xo_draw_creature_random_point(canvas, collision, true);
+//     xo_draw_random_creatures(canvas, collision, 20, inserted_creature);
+    xo_draw_the_chosen_one(canvas, collision, true);
+    xo_draw_life(canvas, 3);
 
     canvas_draw(canvas);
 //     sleep(1);
