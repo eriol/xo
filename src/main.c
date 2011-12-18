@@ -50,11 +50,11 @@ int main(void)
     xo_insert_creature_random_point(canvas, collision, true);
     xo_insert_random_creatures(canvas, collision, 20, inserted_creature);
     xo_insert_the_chosen_one(canvas, collision, true);
-
+    xo_insert_life(canvas, 3);
 
     canvas_draw(canvas);
-    sleep(1);
-    canvas_draw(collision);
+//     sleep(1);
+//     canvas_draw(collision);
 
     while (true) {
         sleep(10);

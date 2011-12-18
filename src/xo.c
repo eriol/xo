@@ -9,6 +9,9 @@
 #define LAYOUT_BOTTOM_DELTA 7
 #define CREATURE_SIZE_X 5
 #define CREATURE_SIZE_Y 5
+#define LIFE_SIZE_X 5
+#define LIFE_SIZE_Y 5
+#define LIFE_STARTING_POSITION_Y 7
 #define MAX_TRIES 5
 
 canvas_element_t obstacle_mark = L'☠';
@@ -56,6 +59,8 @@ void xo_draw_game_layout(Canvas c, Canvas o)
 
     xo_draw_background_box(c, o);
     canvas_horizontal_line(c, x, 1, y - 1, L'⣿');
+    canvas_vertical_line(c, x + 1, 6, 5, L'⣿');
+    canvas_vertical_line(c, x + 1, 24, 5, L'⣿');
     if (o != NULL) {
         canvas_box_fill(o, x, 1, canvas_get_rows(c) - 1, y , obstacle_mark);
     }
@@ -91,6 +96,35 @@ void xo_insert_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
             canvas_set_element(c, i + x, j + y, e);
             if (o != NULL) {
                 canvas_set_element(o, i + x, j + y, obstacle_mark);
+            }
+        }
+    }
+}
+
+void xo_insert_life(Canvas c, int n)
+{
+    canvas_element_t life[LIFE_SIZE_X][LIFE_SIZE_Y] = {
+        L" ♥.♥ ",
+        L"♥♥♥♥♥",
+        L"♥♥♥♥♥",
+        L" ♥♥♥ ",
+        L"  ♥  "
+    };
+
+    int x = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA + 1;
+    int life_position_y[3] = {LIFE_STARTING_POSITION_Y,
+                              LIFE_STARTING_POSITION_Y + LIFE_SIZE_Y + 1,
+                              LIFE_STARTING_POSITION_Y + (LIFE_SIZE_Y * 2) + 2};
+
+    // Player has only 3 lifes
+    if (n > 3)
+        n = 3;
+
+    for (int y = 0; y < n; y++){
+        for (int i = 0; i < LIFE_SIZE_X; i++) {
+            for (int j = 0; j < LIFE_SIZE_Y; j++) {
+                canvas_set_element(c, i + x, j + life_position_y[y],
+                                   life[i][j]);
             }
         }
     }
