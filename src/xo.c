@@ -122,5 +122,8 @@ int xo_insert_creature_random(Canvas c, Canvas o, bool creature_x)
 
     if (!check_collision(o, x, y)) {
         xo_insert_creature(c, o, x, y, creature_x);
+        return 1;
     }
+
+    return 0;
 }
