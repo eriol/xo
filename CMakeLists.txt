@@ -15,6 +15,6 @@ endif ()
 
 include_directories(src)
 
-add_definitions(-Wall -W -Wextra -Wstrict-prototypes -pedantic -ansi -std=c99)
+add_definitions(-Wall -W -Wextra -Wstrict-prototypes -pedantic -ansi -std=gnu99)
 
 add_subdirectory(src)
