@@ -51,7 +51,7 @@ void xo_draw_background_box(Canvas c, Canvas o)
 void xo_draw_game_layout(Canvas c, Canvas o)
 {
     int x = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA;
-    int y = canvas_get_cols(c) - 1;
+    int y = canvas_get_cols(c) - 2;
 
     xo_draw_background_box(c, o);
     canvas_horizontal_line(c, x, 1, y, L'⣿');
