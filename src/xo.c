@@ -26,17 +26,17 @@ void xo_intro(Canvas c)
     for (int i = 0; i < cols + multi_creature_lenght; i++) {
         canvas_clean(c);
         // Forward
-        xo_insert_creature(c, NULL,
+        xo_draw_creature(c, NULL,
                            center - CREATURE_SIZE_Y - 2,
                            0 - multi_creature_lenght + i,
                            true);
-        xo_insert_creature(c, NULL,
+        xo_draw_creature(c, NULL,
                            center - CREATURE_SIZE_X - 2,
                            CREATURE_SIZE_X - multi_creature_lenght + i,
                            false);
         //Backward
-        xo_insert_creature(c, NULL, center + 2, cols - 2 - i, false);
-        xo_insert_creature(c, NULL, center + 2, cols - 2 + CREATURE_SIZE_X - i,
+        xo_draw_creature(c, NULL, center + 2, cols - 2 - i, false);
+        xo_draw_creature(c, NULL, center + 2, cols - 2 + CREATURE_SIZE_X - i,
                            true);
         xo_draw_background_intro(c);
         canvas_draw(c);
@@ -66,7 +66,7 @@ void xo_draw_game_layout(Canvas c, Canvas o)
     }
 }
 
-void xo_insert_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
+void xo_draw_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
 {
     canvas_element_t x_creature[CREATURE_SIZE_X][CREATURE_SIZE_Y] = {
         L"✖   ✖",
@@ -101,7 +101,7 @@ void xo_insert_creature(Canvas c, Canvas o, int x, int y, bool creature_x)
     }
 }
 
-void xo_insert_life(Canvas c, int n)
+void xo_draw_life(Canvas c, int n)
 {
     canvas_element_t life[LIFE_SIZE_X][LIFE_SIZE_Y] = {
         L" ♥.♥ ",
@@ -130,10 +130,10 @@ void xo_insert_life(Canvas c, int n)
     }
 }
 
-void xo_insert_the_chosen_one(Canvas c, Canvas o, bool creature_x)
+void xo_draw_the_chosen_one(Canvas c, Canvas o, bool creature_x)
 {
     int x = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA + 1;
-    xo_insert_creature(c, o, x, 1, creature_x);
+    xo_draw_creature(c, o, x, 1, creature_x);
 }
 
 static int check_collision(Canvas o, int x, int y)
@@ -149,7 +149,7 @@ static int check_collision(Canvas o, int x, int y)
     return 0;
 }
 
-int xo_insert_creature_random_point(Canvas c, Canvas o, bool creature_x)
+int xo_draw_creature_random_point(Canvas c, Canvas o, bool creature_x)
 {
     int x, y, x_min, y_min, x_max, y_max;
 
@@ -162,14 +162,14 @@ int xo_insert_creature_random_point(Canvas c, Canvas o, bool creature_x)
     y = randrange(y_min, y_max);
 
     if (!check_collision(o, x, y)) {
-        xo_insert_creature(c, o, x, y, creature_x);
+        xo_draw_creature(c, o, x, y, creature_x);
         return 1;
     }
 
     return 0;
 }
 
-int xo_insert_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
+int xo_draw_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
 {
     int inserted, res, current_try;
 
@@ -177,7 +177,7 @@ int xo_insert_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
 
     for (int i = 0; i < n; i++) {
         while(current_try < MAX_TRIES) {
-            res = xo_insert_creature_random_point(c, o, creature_x);
+            res = xo_draw_creature_random_point(c, o, creature_x);
             if (res) {
                 inserted++;
                 break;
@@ -190,7 +190,7 @@ int xo_insert_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
     return inserted;
 }
 
-void xo_insert_random_creatures(Canvas c, Canvas o, int n, int *in_xo)
+void xo_draw_random_creatures(Canvas c, Canvas o, int n, int *in_xo)
 {
     bool creature;
     int res, current_try;
@@ -201,7 +201,7 @@ void xo_insert_random_creatures(Canvas c, Canvas o, int n, int *in_xo)
         creature = (bool) randrange(0, 1);
 
         while(current_try < MAX_TRIES) {
-            res = xo_insert_creature_random_point(c, o, creature);
+            res = xo_draw_creature_random_point(c, o, creature);
             if (res) {
                 in_xo[creature]++;
                 break;
