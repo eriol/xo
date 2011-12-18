@@ -35,7 +35,7 @@ int main(void)
 
     buffer_init(&input_buffer, BUFFER_MAX_SIZE);
 
-    // Initialize random seed TODO: move on the thread video control
+    // Initialize random seed
     srandom(time(NULL));
 
 //     s = pthread_create(&thr, NULL, input_thread, NULL);
@@ -49,12 +49,13 @@ int main(void)
 
 //     xo_intro(canvas);
     xo_draw_game_layout(canvas, collision);
-//     xo_draw_creature(canvas, collision, 1, 1, true);
+    xo_draw_creature(canvas, collision, 1, 1, true);
     xo_draw_bunch_creatures(canvas, collision, true, 4);
-//     xo_draw_creature_random_point(canvas, collision, true);
-//     xo_draw_random_creatures(canvas, collision, 20, inserted_creature);
+    xo_draw_creature_random_point(canvas, collision, true);
+    xo_draw_random_creatures(canvas, collision, 20, inserted_creature);
     xo_draw_the_chosen_one(canvas, collision, true);
     xo_draw_life(canvas, 3);
+    xo_draw_timebar100(canvas, 50);
 
     canvas_draw(canvas);
 //     sleep(1);

@@ -130,6 +130,31 @@ void xo_draw_life(Canvas c, int n)
     }
 }
 
+void xo_draw_timebar(Canvas c, int lenght)
+{
+    canvas_element_t timebar_mark = L'♦';
+    int x1 = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA + 1;
+    int y1 = 25;
+    int x2 = canvas_get_rows(c) - 1;
+    int y2 = y1 + lenght;
+    int max_length = canvas_get_cols(c) - 1;
+
+    if (y2 > max_length)
+        y2 = max_length;
+
+    canvas_box_fill(c, x1, y1, x2, y2, timebar_mark);
+}
+
+void xo_draw_timebar100(Canvas c, int percent)
+{
+    int lenght;
+    int max_length = (canvas_get_cols(c) - 1) - 25;
+
+    lenght = (int) ((max_length * percent) / 100);
+
+    xo_draw_timebar(c, lenght);
+}
+
 void xo_draw_the_chosen_one(Canvas c, Canvas o, bool creature_x)
 {
     int x = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA + 1;
