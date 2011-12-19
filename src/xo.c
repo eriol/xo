@@ -220,7 +220,10 @@ int xo_draw_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n)
 
     for (int i = 0; i < n; i++) {
         while(current_try < MAX_TRIES) {
-            res = xo_draw_creature_random_point(c, o, creature_x, NULL);
+            res = xo_draw_creature_random_point(c, o, creature_x,
+                                                (int []) {NONE,
+                                                          random_fcolor(),
+                                                          NONE});
             if (res) {
                 inserted++;
                 break;
@@ -244,7 +247,10 @@ void xo_draw_random_creatures(Canvas c, Canvas o, int n, int *in_xo)
         creature = (bool) randrange(0, 1);
 
         while(current_try < MAX_TRIES) {
-            res = xo_draw_creature_random_point(c, o, creature, NULL);
+            res = xo_draw_creature_random_point(c, o, creature,
+                                                (int []) {NONE,
+                                                          random_fcolor(),
+                                                          NONE});
             if (res) {
                 in_xo[creature]++;
                 break;
