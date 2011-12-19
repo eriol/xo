@@ -46,9 +46,11 @@ void xo_intro(Canvas c)
 
 void xo_draw_background_box(Canvas c, Canvas o)
 {
-    canvas_border(c, L"♠♣☮");
+    canvas_border(c, L"♠♣☮", (int []) {NONE, F_GREEN, NONE},
+                             (int []) {NONE, F_YELLOW, NONE},
+                             (int []) {NONE, F_MAGENTA, NONE});
     if (o != NULL) {
-        canvas_border(o, L"☠☠☠");
+        canvas_border(o, L"☠☠☠", NULL, NULL, NULL);
     }
 }
 
@@ -58,9 +60,10 @@ void xo_draw_game_layout(Canvas c, Canvas o)
     int y = canvas_get_cols(c) - 1;
 
     xo_draw_background_box(c, o);
-    canvas_horizontal_line(c, x, 1, y - 1, L'⣿', NULL);
-    canvas_vertical_line(c, x + 1, 6, 5, L'⣿', NULL);
-    canvas_vertical_line(c, x + 1, 24, 5, L'⣿', NULL);
+    canvas_horizontal_line(c, x, 1, y - 1, L'⣿', (int []) {NONE, F_RED, NONE});
+    canvas_vertical_line(c, x + 1, 6, 5, L'⣿', (int []) {NONE, F_RED, NONE});
+    canvas_vertical_line(c, x + 1, 24, 5, L'⣿', (int []) {NONE, F_RED, NONE});
+
     if (o != NULL) {
         canvas_box_fill(o, x, 1, canvas_get_rows(c) - 1, y , obstacle_mark);
     }

@@ -195,26 +195,35 @@ void canvas_vertical_line(Canvas c, int x, int y, int lenght,
         canvas_set_element(c, x + i, y, e);
 
         if (c->advanced_options && options != NULL) {
-            canvas_set_element_options(c, x + i, y + i, options);
+            canvas_set_element_options(c, x + i, y, options);
         }
     }
 }
 
-void canvas_box(Canvas c, int x1, int y1, int x2, int y2, canvas_element_t d[3])
+void canvas_box(Canvas c, int x1, int y1, int x2, int y2, canvas_element_t *d,
+                int *horizontal_options, int *vertical_options,
+                int *corners_options)
 {
         // Up
-        canvas_horizontal_line(c, x1, y1, y2, d[0], NULL);
+        canvas_horizontal_line(c, x1, y1, y2, d[0], horizontal_options);
         // Bottom
-        canvas_horizontal_line(c, x2, y1, y2, d[0], NULL);
+        canvas_horizontal_line(c, x2, y1, y2, d[0], horizontal_options);
         // Left
-        canvas_vertical_line(c, x1, y1, x2, d[1], NULL);
+        canvas_vertical_line(c, x1, y1, x2, d[1], vertical_options);
         // Right
-        canvas_vertical_line(c, x1, y2, x2, d[1], NULL);
+        canvas_vertical_line(c, x1, y2, x2, d[1], vertical_options);
         //Corners clockwise order
         canvas_set_element(c, x1, y1, d[2]);
         canvas_set_element(c, x1, y2, d[2]);
         canvas_set_element(c, x2, y2, d[2]);
         canvas_set_element(c, x2, y1, d[2]);
+
+        if (c->advanced_options && corners_options != NULL) {
+            canvas_set_element_options(c, x1, y1, corners_options);
+            canvas_set_element_options(c, x1, y2, corners_options);
+            canvas_set_element_options(c, x2, y2, corners_options);
+            canvas_set_element_options(c, x2, y1, corners_options);
+        }
 }
 
 void canvas_box_fill(Canvas c, int x1, int y1, int x2, int y2,
@@ -227,9 +236,11 @@ void canvas_box_fill(Canvas c, int x1, int y1, int x2, int y2,
     }
 }
 
-void canvas_border(Canvas c, canvas_element_t d[3])
+void canvas_border(Canvas c, canvas_element_t *d, int *horizontal_options,
+                   int *vertical_options, int *corners_options)
 {
-    canvas_box(c, 0, 0, c->rows - 1, c->cols - 1, d);
+    canvas_box(c, 0, 0, c->rows - 1, c->cols - 1, d, horizontal_options,
+               vertical_options, corners_options);
 }
 
 void canvas_draw(Canvas c)
