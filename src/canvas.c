@@ -129,6 +129,11 @@ void canvas_destroy(Canvas c)
     free(c);
 }
 
+bool canvas_has_advanced_options(Canvas c)
+{
+    return c->advanced_options;
+}
+
 int canvas_get_rows(Canvas c)
 {
     return c->rows;
@@ -166,7 +171,6 @@ void canvas_get_element_options(Canvas c, int x, int y, int *options)
             options[i] = c->option_map[x][y][i];
     }
 }
-
 
 void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
                             canvas_element_t e, int* options)

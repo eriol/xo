@@ -39,6 +39,7 @@ void canvas_clean(Canvas c);
 void canvas_destroy(Canvas c);
 int canvas_get_rows(Canvas c);
 int canvas_get_cols(Canvas c);
+bool canvas_has_advanced_options(Canvas c);
 canvas_element_t canvas_get_element(Canvas c, int x, int y);
 void canvas_set_element(Canvas c, int x, int y, canvas_element_t e);
 void canvas_set_element_options(Canvas c, int x, int y, int *options);
