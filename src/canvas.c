@@ -4,6 +4,7 @@
 #include <wchar.h>
 
 #include "canvas.h"
+#include "utils.h"
 
 
 #define OPTION_SIZE 3
@@ -153,14 +154,14 @@ canvas_element_t canvas_get_element(Canvas c, int x, int y)
 
 void canvas_set_element(Canvas c, int x, int y, canvas_element_t e)
 {
-    if (x <= c->rows && x >= 0 && y <= c->cols && y >= 0) {
+    if (x < c->rows && x >= 0 && y < c->cols && y >= 0) {
         c->grid_elements[x][y] = e;
     }
 }
 
 void canvas_set_element_options(Canvas c, int x, int y, int *options)
 {
-    if (x <= c->rows && x >= 0 && y <= c->cols && y >= 0) {
+    if (x < c->rows && x >= 0 && y < c->cols && y >= 0) {
         for (int i = 0; i < OPTION_SIZE; i++)
             c->option_map[x][y][i] = options[i];
     }
@@ -168,7 +169,7 @@ void canvas_set_element_options(Canvas c, int x, int y, int *options)
 
 void canvas_get_element_options(Canvas c, int x, int y, int *options)
 {
-    if (x <= c->rows && x >= 0 && y <= c->cols && y >= 0) {
+    if (x < c->rows && x >= 0 && y < c->cols && y >= 0) {
         for (int i = 0; i < OPTION_SIZE; i++)
             options[i] = c->option_map[x][y][i];
     }

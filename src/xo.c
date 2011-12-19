@@ -22,19 +22,27 @@ void xo_intro(Canvas c)
     int rows = canvas_get_rows(c);
     int center = (int) (rows / 2);
     int multi_creature_lenght = 8;
+    int color1, color2, color3, color4;
+
+    color1 = random_fcolor();
+    color2 = random_fcolor();
+    color3 = random_fcolor();
+    color4 = random_fcolor();
 
     for (int i = 0; i < cols + multi_creature_lenght; i++) {
         canvas_clean(c);
         // Forward
         xo_draw_creature(c, NULL, center - CREATURE_SIZE_Y - 2,
-                         0 - multi_creature_lenght + i, true, NULL);
+                         0 - multi_creature_lenght + i, true,
+                         (int []) {NONE, color1, NONE});
         xo_draw_creature(c, NULL, center - CREATURE_SIZE_X - 2,
                          CREATURE_SIZE_X - multi_creature_lenght + i,
-                         false, NULL);
+                         false, (int []) {NONE, color2, NONE});
         //Backward
-        xo_draw_creature(c, NULL, center + 2, cols - 2 - i, false, NULL);
-        xo_draw_creature(c, NULL, center + 2, cols - 2 + CREATURE_SIZE_X - i,
-                         true, NULL);
+        xo_draw_creature(c, NULL, center + 2, cols - i, false,
+                         (int []) {NONE, color3, NONE});
+        xo_draw_creature(c, NULL, center + 2, cols  + CREATURE_SIZE_X - i,
+                         true, (int []) {NONE, color4, NONE});
         xo_draw_background_intro(c);
         canvas_draw(c);
         usleep(INTRO_SPEED);
