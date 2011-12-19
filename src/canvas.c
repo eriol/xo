@@ -13,6 +13,7 @@ struct canvas_type {
     int **color_map;
 };
 
+
 Canvas canvas_create(int rows, int cols, bool enable_colors)
 {
     Canvas c = malloc(sizeof(struct canvas_type));
@@ -88,7 +89,7 @@ void canvas_clean(Canvas c)
     if (c->color_map !=NULL) {
         for (int i = 0; i < c->rows; i++) {
             for (int j = 0; j < c->cols; j++) {
-                c->grid_elements[i][j] = 0;
+                c->color_map[i][j] = 0;
             }
         }
     }
