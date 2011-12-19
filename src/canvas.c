@@ -5,16 +5,18 @@
 
 #include "canvas.h"
 
+#define OPTION_SIZE 3
+
 struct canvas_type {
     int rows;
     int cols;
     canvas_element_t **grid_elements;
-    bool color_enabled;
-    int **option_map;
+    bool advanced_options;
+    int ***option_map;
 };
 
 
-Canvas canvas_create(int rows, int cols, bool enable_colors)
+Canvas canvas_create(int rows, int cols, bool advanced_options)
 {
     Canvas c = malloc(sizeof(struct canvas_type));
     if (c == NULL) {
@@ -30,7 +32,6 @@ Canvas canvas_create(int rows, int cols, bool enable_colors)
 
     if (c->grid_elements == NULL) {
         perror("canvas_create: can't allocate rows array");
-        free(c);
         return NULL;
     }
 
@@ -40,42 +41,46 @@ Canvas canvas_create(int rows, int cols, bool enable_colors)
 
         if (c->grid_elements[i] == NULL) {
             perror("canvas_create: can't allocate col array");
-            for (int j = --i; j >= 0; j--) {
-                free(c->grid_elements[j]);
-            }
             return NULL;
         }
 
     }
 
-    c->color_enabled = enable_colors;
+    c->advanced_options = advanced_options;
 
-    if (enable_colors) {
-        c->option_map = malloc(rows * sizeof(int *));
+    if (advanced_options) {
+        c->option_map = malloc(rows * sizeof(int **));
         if (c->option_map == NULL) {
-            perror("canvas_create: can't allocate color rows array");
-            c->color_enabled = false;
+            perror("canvas_create: can't allocate option rows array");
+            c->advanced_options = false;
+            goto exit;
         }
 
-        if (c->option_map != NULL) {
-            for (int i = 0; i < rows; i++) {
-                c->option_map[i] = malloc(cols * sizeof(int));
+        for (int i = 0; i < rows; i++) {
+            c->option_map[i] = malloc(cols * sizeof(int *));
 
-                if (c->option_map[i] == NULL) {
-                    perror("canvas_create: can't allocate color col array");
-                    for (int j = --i; j >= 0; j--) {
-                        free(c->option_map[j]);
-                    }
-                    c->color_enabled = false;
+            if (c->option_map[i] == NULL) {
+                perror("canvas_create: can't allocate option col array");
+                c->advanced_options = false;
+                goto exit;
+            }
+
+            for (int j = 0; j < cols; j++) {
+                c->option_map[i][j] = malloc(OPTION_SIZE * sizeof(int));
+
+                if (c->option_map[i][j] == NULL) {
+                    perror("canvas_create: can't allocate options array");
+                    c->advanced_options = false;
+                    goto exit;
                 }
             }
         }
     }
 
-    canvas_clean(c);
+    exit:
+        canvas_clean(c);
 
-    return c;
-
+        return c;
 }
 
 void canvas_clean(Canvas c)
@@ -86,10 +91,12 @@ void canvas_clean(Canvas c)
         }
     }
 
-    if (c->option_map !=NULL) {
+    if (c->advanced_options) {
         for (int i = 0; i < c->rows; i++) {
             for (int j = 0; j < c->cols; j++) {
-                c->option_map[i][j] = 0;
+                for (int k = 0; k < OPTION_SIZE; k++) {
+                    c->option_map[i][j][k] = 0;
+                }
             }
         }
     }
@@ -97,18 +104,24 @@ void canvas_clean(Canvas c)
 
 void canvas_destroy(Canvas c)
 {
-    // Deallocating cols array for each row
+    // cols array for each row
     for (int i = 0; i < c->rows; i++) {
         free(c->grid_elements[i]);
     }
-    // Deallocating rows array
+    // rows array
     free(c->grid_elements);
 
-    // Free the option_map if it exists
-    if (c->option_map !=NULL) {
+
+    if (c->advanced_options) {
         for (int i = 0; i < c->rows; i++) {
+            for (int j = 0; j < c->cols; j++) {
+                // options array
+                free(c->option_map[i][j]);
+            }
+            // cols array for each row
             free(c->option_map[i]);
         }
+        // rows array
         free(c->option_map);
     }
 

@@ -6,7 +6,7 @@
 typedef wchar_t canvas_element_t;
 typedef struct canvas_type *Canvas;
 
-Canvas canvas_create(int rows, int cols, bool enable_colors);
+Canvas canvas_create(int rows, int cols, bool advanced_options);
 void canvas_clean(Canvas c);
 void canvas_destroy(Canvas c);
 int canvas_get_rows(Canvas c);
