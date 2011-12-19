@@ -10,7 +10,7 @@ struct canvas_type {
     int cols;
     canvas_element_t **grid_elements;
     bool color_enabled;
-    int **color_map;
+    int **option_map;
 };
 
 
@@ -51,20 +51,20 @@ Canvas canvas_create(int rows, int cols, bool enable_colors)
     c->color_enabled = enable_colors;
 
     if (enable_colors) {
-        c->color_map = malloc(rows * sizeof(int *));
-        if (c->color_map == NULL) {
+        c->option_map = malloc(rows * sizeof(int *));
+        if (c->option_map == NULL) {
             perror("canvas_create: can't allocate color rows array");
             c->color_enabled = false;
         }
 
-        if (c->color_map != NULL) {
+        if (c->option_map != NULL) {
             for (int i = 0; i < rows; i++) {
-                c->color_map[i] = malloc(cols * sizeof(int));
+                c->option_map[i] = malloc(cols * sizeof(int));
 
-                if (c->color_map[i] == NULL) {
+                if (c->option_map[i] == NULL) {
                     perror("canvas_create: can't allocate color col array");
                     for (int j = --i; j >= 0; j--) {
-                        free(c->color_map[j]);
+                        free(c->option_map[j]);
                     }
                     c->color_enabled = false;
                 }
@@ -86,10 +86,10 @@ void canvas_clean(Canvas c)
         }
     }
 
-    if (c->color_map !=NULL) {
+    if (c->option_map !=NULL) {
         for (int i = 0; i < c->rows; i++) {
             for (int j = 0; j < c->cols; j++) {
-                c->color_map[i][j] = 0;
+                c->option_map[i][j] = 0;
             }
         }
     }
@@ -104,12 +104,12 @@ void canvas_destroy(Canvas c)
     // Deallocating rows array
     free(c->grid_elements);
 
-    // Free the color_map if it exists
-    if (c->color_map !=NULL) {
+    // Free the option_map if it exists
+    if (c->option_map !=NULL) {
         for (int i = 0; i < c->rows; i++) {
-            free(c->color_map[i]);
+            free(c->option_map[i]);
         }
-        free(c->color_map);
+        free(c->option_map);
     }
 
     // Engage photon torpedoes. Fire!
