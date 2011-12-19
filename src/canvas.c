@@ -169,7 +169,7 @@ void canvas_get_element_options(Canvas c, int x, int y, int *options)
 
 
 void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
-                            canvas_element_t e)
+                            canvas_element_t e, int* options)
 {
     if (lenght > c->cols) {
         lenght = c->cols;
@@ -177,11 +177,15 @@ void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
 
     for(int i = 0; i < lenght; i++) {
         canvas_set_element(c, x, y + i, e);
+
+        if (c->advanced_options && options != NULL) {
+            canvas_set_element_options(c, x, y + i, options);
+        }
     }
 }
 
 void canvas_vertical_line(Canvas c, int x, int y, int lenght,
-                          canvas_element_t e)
+                          canvas_element_t e, int* options)
 {
     if (lenght > c->rows) {
         lenght = c->rows;
@@ -189,19 +193,23 @@ void canvas_vertical_line(Canvas c, int x, int y, int lenght,
 
     for(int i = 0; i < lenght; i++) {
         canvas_set_element(c, x + i, y, e);
+
+        if (c->advanced_options && options != NULL) {
+            canvas_set_element_options(c, x + i, y + i, options);
+        }
     }
 }
 
 void canvas_box(Canvas c, int x1, int y1, int x2, int y2, canvas_element_t d[3])
 {
         // Up
-        canvas_horizontal_line(c, x1, y1, y2, d[0]);
+        canvas_horizontal_line(c, x1, y1, y2, d[0], NULL);
         // Bottom
-        canvas_horizontal_line(c, x2, y1, y2, d[0]);
+        canvas_horizontal_line(c, x2, y1, y2, d[0], NULL);
         // Left
-        canvas_vertical_line(c, x1, y1, x2, d[1]);
+        canvas_vertical_line(c, x1, y1, x2, d[1], NULL);
         // Right
-        canvas_vertical_line(c, x1, y2, x2, d[1]);
+        canvas_vertical_line(c, x1, y2, x2, d[1], NULL);
         //Corners clockwise order
         canvas_set_element(c, x1, y1, d[2]);
         canvas_set_element(c, x1, y2, d[2]);

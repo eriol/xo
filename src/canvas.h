@@ -44,9 +44,9 @@ void canvas_set_element(Canvas c, int x, int y, canvas_element_t e);
 void canvas_set_element_options(Canvas c, int x, int y, int *options);
 void canvas_get_element_options(Canvas c, int x, int y, int *options);
 void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
-                            canvas_element_t e);
+                            canvas_element_t e, int* options);
 void canvas_vertical_line(Canvas c, int x, int y, int lenght,
-                          canvas_element_t e);
+                          canvas_element_t e, int* options);
 void canvas_box(Canvas c, int x1, int y1, int x2, int y2,
                 canvas_element_t d[3]);
 void canvas_border(Canvas c, canvas_element_t d[3]);
