@@ -17,8 +17,10 @@ void xo_draw_life(Canvas c, int n);
 void xo_draw_timebar(Canvas c, int lenght, int *options);
 void xo_draw_timebar100(Canvas c, int percent, int *options);
 
-void xo_draw_creature(Canvas c, Canvas o, int x, int y, bool creature_x);
-int xo_draw_creature_random_point(Canvas c, Canvas o, bool creature_x);
+void xo_draw_creature(Canvas c, Canvas o, int x, int y, bool creature_x,
+                      int *options);
+int xo_draw_creature_random_point(Canvas c, Canvas o, bool creature_x,
+                                  int *options);
 int xo_draw_bunch_creatures(Canvas c, Canvas o, bool creature_x, int n);
 void xo_draw_random_creatures(Canvas c, Canvas o, int n, int *in_xo);
 

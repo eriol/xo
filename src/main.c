@@ -47,11 +47,12 @@ int main(void)
     canvas = canvas_create(rows, cols, true);
     collision = canvas_create(rows, cols, false);
 
-//     xo_intro(canvas);
+    xo_intro(canvas);
     xo_draw_game_layout(canvas, collision);
-    xo_draw_creature(canvas, collision, 1, 1, true);
+    xo_draw_creature(canvas, collision, 1, 1, true, (int []) {NONE, F_RED, NONE});
     xo_draw_bunch_creatures(canvas, collision, true, 4);
-    xo_draw_creature_random_point(canvas, collision, true);
+    xo_draw_creature_random_point(canvas, collision, true,
+                                  (int []) {NONE, F_GREEN, NONE});
     xo_draw_random_creatures(canvas, collision, 20, inserted_creature);
     xo_draw_the_chosen_one(canvas, collision, true);
     xo_draw_life(canvas, 3);

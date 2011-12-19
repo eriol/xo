@@ -57,4 +57,7 @@ void canvas_box_fill(Canvas c, int x1, int y1, int x2, int y2,
                      canvas_element_t d, int *options);
 void canvas_draw(Canvas c);
 
+int random_fcolor(void);
+int random_bcolor(void);
+
 #endif

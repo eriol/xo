@@ -5,7 +5,9 @@
 
 #include "canvas.h"
 
+
 #define OPTION_SIZE 3
+
 
 struct canvas_type {
     int rows;
@@ -274,4 +276,14 @@ void canvas_draw(Canvas c)
         }
     }
     fflush(stdout);
+}
+
+int random_fcolor(void)
+{
+    return randrange(F_BLACK, F_WHITE);
+}
+
+int random_bcolor(void)
+{
+    return randrange(B_BLACK, B_WHITE);
 }
