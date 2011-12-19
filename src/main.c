@@ -44,8 +44,8 @@ int main(void)
 //     }
 
     terminal_get_size(&rows, &cols);
-    canvas = canvas_create(rows, cols);
-    collision = canvas_create(rows, cols);
+    canvas = canvas_create(rows, cols, false);
+    collision = canvas_create(rows, cols, false);
 
 //     xo_intro(canvas);
     xo_draw_game_layout(canvas, collision);
@@ -58,8 +58,8 @@ int main(void)
     xo_draw_timebar100(canvas, 50);
 
     canvas_draw(canvas);
-//     sleep(1);
-//     canvas_draw(collision);
+    sleep(1);
+    canvas_draw(collision);
 
     while (true) {
         sleep(10);

@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <wchar.h>
@@ -8,9 +9,11 @@ struct canvas_type {
     int rows;
     int cols;
     canvas_element_t **grid_elements;
+    bool color_enabled;
+    int **color_map;
 };
 
-Canvas canvas_create(int rows, int cols)
+Canvas canvas_create(int rows, int cols, bool enable_colors)
 {
     Canvas c = malloc(sizeof(struct canvas_type));
     if (c == NULL) {
@@ -44,6 +47,30 @@ Canvas canvas_create(int rows, int cols)
 
     }
 
+    c->color_enabled = enable_colors;
+
+    if (enable_colors) {
+        c->color_map = malloc(rows * sizeof(int *));
+        if (c->color_map == NULL) {
+            perror("canvas_create: can't allocate color rows array");
+            c->color_enabled = false;
+        }
+
+        if (c->color_map != NULL) {
+            for (int i = 0; i < rows; i++) {
+                c->color_map[i] = malloc(cols * sizeof(int));
+
+                if (c->color_map[i] == NULL) {
+                    perror("canvas_create: can't allocate color col array");
+                    for (int j = --i; j >= 0; j--) {
+                        free(c->color_map[j]);
+                    }
+                    c->color_enabled = false;
+                }
+            }
+        }
+    }
+
     canvas_clean(c);
 
     return c;
@@ -57,6 +84,14 @@ void canvas_clean(Canvas c)
             c->grid_elements[i][j] = L' ';
         }
     }
+
+    if (c->color_map !=NULL) {
+        for (int i = 0; i < c->rows; i++) {
+            for (int j = 0; j < c->cols; j++) {
+                c->grid_elements[i][j] = 0;
+            }
+        }
+    }
 }
 
 void canvas_destroy(Canvas c)
@@ -67,7 +102,16 @@ void canvas_destroy(Canvas c)
     }
     // Deallocating rows array
     free(c->grid_elements);
-    // Destroy!
+
+    // Free the color_map if it exists
+    if (c->color_map !=NULL) {
+        for (int i = 0; i < c->rows; i++) {
+            free(c->color_map[i]);
+        }
+        free(c->color_map);
+    }
+
+    // Engage photon torpedoes. Fire!
     free(c);
 }
 
@@ -153,7 +197,7 @@ void canvas_draw(Canvas c)
 {
     for (int x = 0; x < c->rows; x++) {
         for (int y = 0; y < c->cols; y++) {
-            // Terminal starts from 1 so x+1 and y+1 are needed to fix
+            // Terminal starts from 1 so x + 1 and y + 1 are needed to fix
             // coordinates
             fwprintf(stdout, L"\033[%d;%dH%lc", x + 1, y + 1,
                      c->grid_elements[x][y]);
