@@ -151,6 +151,23 @@ void canvas_set_element(Canvas c, int x, int y, canvas_element_t e)
     }
 }
 
+void canvas_set_element_options(Canvas c, int x, int y, int *options)
+{
+    if (x <= c->rows && x >= 0 && y <= c->cols && y >= 0) {
+        for (int i = 0; i < OPTION_SIZE; i++)
+            c->option_map[x][y][i] = options[i];
+    }
+}
+
+void canvas_get_element_options(Canvas c, int x, int y, int *options)
+{
+    if (x <= c->rows && x >= 0 && y <= c->cols && y >= 0) {
+        for (int i = 0; i < OPTION_SIZE; i++)
+            options[i] = c->option_map[x][y][i];
+    }
+}
+
+
 void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
                             canvas_element_t e)
 {
@@ -211,10 +228,21 @@ void canvas_draw(Canvas c)
 {
     for (int x = 0; x < c->rows; x++) {
         for (int y = 0; y < c->cols; y++) {
+            if (c->advanced_options) {
+                if (c->option_map[x][y][2] > 0)
+                    fwprintf(stdout, L"\033[%d;%d;%dm", c->option_map[x][y][0],
+                                                        c->option_map[x][y][1],
+                                                        c->option_map[x][y][2]);
+                else
+                    fwprintf(stdout, L"\033[%d;%dm", c->option_map[x][y][0],
+                                                     c->option_map[x][y][1]);
+            }
             // Terminal starts from 1 so x + 1 and y + 1 are needed to fix
             // coordinates
             fwprintf(stdout, L"\033[%d;%dH%lc", x + 1, y + 1,
                      c->grid_elements[x][y]);
+            if (c->advanced_options)
+                fwprintf(stdout, L"\033[%dm", 0);
         }
     }
     fflush(stdout);

@@ -5,6 +5,34 @@
 
 typedef wchar_t canvas_element_t;
 typedef struct canvas_type *Canvas;
+enum canvas_attributes {
+    NONE,
+    BOLD,
+    UNDERSCORE,
+    BLINK = 5,
+    REVERSE = 7,
+    CONCEALED
+};
+enum foreground_colors {
+    F_BLACK = 30,
+    F_RED,
+    F_GREEN,
+    F_YELLOW,
+    F_BLUE,
+    F_MAGENTA,
+    F_CYAN,
+    F_WHITE
+};
+enum backgroung_colors {
+    B_BLACK = 40,
+    B_RED,
+    B_GREEN,
+    B_YELLOW,
+    B_BLUE,
+    B_MAGENTA,
+    B_CYAN,
+    B_WHITE
+};
 
 Canvas canvas_create(int rows, int cols, bool advanced_options);
 void canvas_clean(Canvas c);
@@ -13,6 +41,8 @@ int canvas_get_rows(Canvas c);
 int canvas_get_cols(Canvas c);
 canvas_element_t canvas_get_element(Canvas c, int x, int y);
 void canvas_set_element(Canvas c, int x, int y, canvas_element_t e);
+void canvas_set_element_options(Canvas c, int x, int y, int *options);
+void canvas_get_element_options(Canvas c, int x, int y, int *options);
 void canvas_horizontal_line(Canvas c, int x, int y, int lenght,
                             canvas_element_t e);
 void canvas_vertical_line(Canvas c, int x, int y, int lenght,
