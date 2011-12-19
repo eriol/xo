@@ -44,7 +44,7 @@ int main(void)
 //     }
 
     terminal_get_size(&rows, &cols);
-    canvas = canvas_create(rows, cols, false);
+    canvas = canvas_create(rows, cols, true);
     collision = canvas_create(rows, cols, false);
 
 //     xo_intro(canvas);
@@ -55,11 +55,12 @@ int main(void)
     xo_draw_random_creatures(canvas, collision, 20, inserted_creature);
     xo_draw_the_chosen_one(canvas, collision, true);
     xo_draw_life(canvas, 3);
-    xo_draw_timebar100(canvas, 50);
+    xo_draw_timebar100(canvas, 50, NULL);
+
 
     canvas_draw(canvas);
-    sleep(1);
-    canvas_draw(collision);
+//     sleep(1);
+//     canvas_draw(collision);
 
     while (true) {
         sleep(10);

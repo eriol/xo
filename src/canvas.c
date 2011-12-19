@@ -227,11 +227,16 @@ void canvas_box(Canvas c, int x1, int y1, int x2, int y2, canvas_element_t *d,
 }
 
 void canvas_box_fill(Canvas c, int x1, int y1, int x2, int y2,
-                     canvas_element_t d)
+                     canvas_element_t d, int *options)
 {
     for (int i = x1; i < x2; i++) {
         for (int j = y1; j < y2; j++) {
             canvas_set_element(c, i, j, d);
+
+            if (c->advanced_options && options != NULL) {
+                canvas_set_element_options(c, i, j, options);
+            }
+
         }
     }
 }

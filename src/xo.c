@@ -65,7 +65,8 @@ void xo_draw_game_layout(Canvas c, Canvas o)
     canvas_vertical_line(c, x + 1, 24, 5, L'⣿', (int []) {NONE, F_CYAN, NONE});
 
     if (o != NULL) {
-        canvas_box_fill(o, x, 1, canvas_get_rows(c) - 1, y , obstacle_mark);
+        canvas_box_fill(o, x, 1, canvas_get_rows(c) - 1, y, obstacle_mark,
+                        NULL);
     }
 }
 
@@ -133,7 +134,7 @@ void xo_draw_life(Canvas c, int n)
     }
 }
 
-void xo_draw_timebar(Canvas c, int lenght)
+void xo_draw_timebar(Canvas c, int lenght, int *options)
 {
     canvas_element_t timebar_mark = L'♦';
     int x1 = canvas_get_rows(c) - LAYOUT_BOTTOM_DELTA + 1;
@@ -145,17 +146,17 @@ void xo_draw_timebar(Canvas c, int lenght)
     if (y2 > max_length)
         y2 = max_length;
 
-    canvas_box_fill(c, x1, y1, x2, y2, timebar_mark);
+    canvas_box_fill(c, x1, y1, x2, y2, timebar_mark, options);
 }
 
-void xo_draw_timebar100(Canvas c, int percent)
+void xo_draw_timebar100(Canvas c, int percent, int *options)
 {
     int lenght;
     int max_length = (canvas_get_cols(c) - 1) - 25;
 
     lenght = (int) ((max_length * percent) / 100);
 
-    xo_draw_timebar(c, lenght);
+    xo_draw_timebar(c, lenght, options);
 }
 
 void xo_draw_the_chosen_one(Canvas c, Canvas o, bool creature_x)
