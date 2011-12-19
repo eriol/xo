@@ -2,9 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "monitorbuffer.h"
+#include "buffer.h"
 
-int buffer_init(buffer_t *b, int size)
+typedef struct buffer_rw_t {
+    int count, size, number_of_readers;
+    buf_element_t *data;
+    pthread_mutex_t mtx_write, mtx_read;
+};
+
+
+int buffer_rw_init(BufferRW b, int size)
 {
     b->count = b->number_of_readers = 0;
     b->size = size;
@@ -15,7 +22,7 @@ int buffer_init(buffer_t *b, int size)
     return (b->data == NULL) ? 1 : 0;
 }
 
-void buffer_append(buffer_t *b, buf_element_t value)
+void buffer_rw_append(BufferRW b, buf_element_t value)
 {
     pthread_mutex_lock(&b->mtx_write);
     b->data[b->count] = value;
@@ -23,7 +30,7 @@ void buffer_append(buffer_t *b, buf_element_t value)
     pthread_mutex_unlock(&b->mtx_write);
 }
 
-int buffer_read(buffer_t *b, buf_element_t *dest)
+int buffer_rw_read(BufferRW b, buf_element_t *dest)
 {
     int read_elements = 0;
     pthread_mutex_lock(&b->mtx_read);
@@ -32,7 +39,6 @@ int buffer_read(buffer_t *b, buf_element_t *dest)
         pthread_mutex_lock(&b->mtx_write);
     pthread_mutex_unlock(&b->mtx_read);
 
-    // TODO: maybe use a condition
     if (b->count > 0) {
         memcpy(dest, b->data, b->count);
         read_elements = b->count;
@@ -47,14 +53,14 @@ int buffer_read(buffer_t *b, buf_element_t *dest)
     return read_elements;
 }
 
-void buffer_clean(buffer_t *b)
+void buffer_rw_clean(BufferRW b)
 {
     pthread_mutex_lock(&b->mtx_write);
     b->count = 0;
     pthread_mutex_unlock(&b->mtx_write);
 }
 
-void buffer_free(buffer_t *b)
+void buffer_rw_free(BufferRW b)
 {
     if (b->data != NULL)
         free(b->data);
