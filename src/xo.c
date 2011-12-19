@@ -26,18 +26,15 @@ void xo_intro(Canvas c)
     for (int i = 0; i < cols + multi_creature_lenght; i++) {
         canvas_clean(c);
         // Forward
-        xo_draw_creature(c, NULL,
-                           center - CREATURE_SIZE_Y - 2,
-                           0 - multi_creature_lenght + i,
-                           true, NULL);
-        xo_draw_creature(c, NULL,
-                           center - CREATURE_SIZE_X - 2,
-                           CREATURE_SIZE_X - multi_creature_lenght + i,
-                           false, NULL);
+        xo_draw_creature(c, NULL, center - CREATURE_SIZE_Y - 2,
+                         0 - multi_creature_lenght + i, true, NULL);
+        xo_draw_creature(c, NULL, center - CREATURE_SIZE_X - 2,
+                         CREATURE_SIZE_X - multi_creature_lenght + i,
+                         false, NULL);
         //Backward
         xo_draw_creature(c, NULL, center + 2, cols - 2 - i, false, NULL);
         xo_draw_creature(c, NULL, center + 2, cols - 2 + CREATURE_SIZE_X - i,
-                           true, NULL);
+                         true, NULL);
         xo_draw_background_intro(c);
         canvas_draw(c);
         usleep(INTRO_SPEED);
