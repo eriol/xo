@@ -60,9 +60,9 @@ void xo_draw_game_layout(Canvas c, Canvas o)
     int y = canvas_get_cols(c) - 1;
 
     xo_draw_background_box(c, o);
-    canvas_horizontal_line(c, x, 1, y - 1, L'⣿', (int []) {NONE, F_RED, NONE});
-    canvas_vertical_line(c, x + 1, 6, 5, L'⣿', (int []) {NONE, F_RED, NONE});
-    canvas_vertical_line(c, x + 1, 24, 5, L'⣿', (int []) {NONE, F_RED, NONE});
+    canvas_horizontal_line(c, x, 1, y - 1, L'⣿', (int []) {NONE, F_CYAN, NONE});
+    canvas_vertical_line(c, x + 1, 6, 5, L'⣿', (int []) {NONE, F_CYAN, NONE});
+    canvas_vertical_line(c, x + 1, 24, 5, L'⣿', (int []) {NONE, F_CYAN, NONE});
 
     if (o != NULL) {
         canvas_box_fill(o, x, 1, canvas_get_rows(c) - 1, y , obstacle_mark);
