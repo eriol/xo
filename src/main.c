@@ -1,9 +1,11 @@
+#include <fcntl.h>
 #include <locale.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "canvas.h"
@@ -16,22 +18,27 @@
 
 #define BUFFER_RW_MAX_SIZE 10
 
-void *input_controller(void *arg);
-void *game_controller(void *arg);
 void *brain(void *);
+void *game_controller(void *arg);
+void *input_controller(void *arg);
+void *sound_controller(void *arg);
+
 
 BufferRW input_buffer;
 BufferPC brain_buffer;
 
 Canvas canvas, collision;
 
+const char audio_dev[] = "/dev/audio";
+
 int main(int argc, char **argv)
 {
     setlocale(LC_ALL, "");
     bool intro_flag = true, sound_flag = false;
     int s, opt;
-    pthread_t thr_input_controller, thr_game_controller, thr_brain;
     unsigned short rows, cols;
+    pthread_t thr_input_controller, thr_game_controller, thr_sound_controller;
+    pthread_t thr_brain;
 
 
     input_buffer = buffer_rw_create(BUFFER_RW_MAX_SIZE);
@@ -74,6 +81,13 @@ int main(int argc, char **argv)
     s = pthread_create(&thr_brain, NULL, brain, NULL);
     if (s != 0) {
         perror("pthread_create: failed to create thr_brain");
+    }
+
+    if (sound_flag) {
+        s = pthread_create(&thr_sound_controller, NULL, sound_controller, NULL);
+        if (s != 0) {
+            perror("pthread_create: failed to create thr_brain");
+        }
     }
 
     while (true) {
@@ -162,6 +176,8 @@ void *game_controller(void *arg)
         for (int i = 0; i < 2; i++)
             inserted_creatures[i] = 0;
     }
+
+    return (int *) 0;
 }
 
 void *brain(void *arg)
@@ -173,4 +189,21 @@ void *brain(void *arg)
         buffer_pc_put(brain_buffer, creature_type);
         buffer_pc_put(brain_buffer, start_creatures);
     }
+}
+
+void *sound_controller(void *arg) {
+    int fd, s;
+
+    fd = open(audio_dev, O_WRONLY);
+    if (fd == -1) {
+        perror("Failed to open /dev/audio");
+        return (int *) 1;
+    }
+
+    for (int i=0;;i++) {
+        s = i*i*(i&15)*((i>>9|i>>12)&19&i>>8);
+        write(fd, &s, 1);
+    }
+
+    return (int *) 0;
 }
