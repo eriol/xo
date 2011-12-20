@@ -34,7 +34,7 @@ const char audio_dev[] = "/dev/audio";
 int main(int argc, char **argv)
 {
     setlocale(LC_ALL, "");
-    bool intro_flag = true, sound_flag = false;
+    bool intro_flag = true, sound_flag = false, color_flag = true;
     int s, opt;
     void *res;
     unsigned short rows, cols;
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     // Initialize random seed
     srandom(time(NULL));
 
-    while ((opt = getopt(argc, argv, "is")) != -1) {
+    while ((opt = getopt(argc, argv, "isc")) != -1) {
         switch (opt) {
             case 'i':
                 intro_flag = false;
@@ -56,16 +56,21 @@ int main(int argc, char **argv)
             case 's':
                 sound_flag = true;
                 break;
+            case 'c':
+                color_flag = false;
+                break;
             default:
                 fprintf(stderr, "Usage: %s [-is]\n", argv[0]);
                 fprintf(stderr, "    -i    Disable introduction\n");
                 fprintf(stderr, "    -s    Enable sound\n");
+                fprintf(stderr, "    -c    Disable colors\n");
                 exit(EXIT_FAILURE);
         }
     }
 
     terminal_get_size(&rows, &cols);
-    canvas = canvas_create(rows, cols, true);
+
+    canvas = canvas_create(rows, cols, color_flag);
     collision = canvas_create(rows, cols, false);
 
     if (intro_flag)
@@ -147,15 +152,12 @@ void *game_controller(void *arg)
     while(life >= 0) {
         buffer_pc_get(brain_buffer, &creature_type);
         buffer_pc_get(brain_buffer, &num_creatures);
-
         canvas_clean(canvas);
         canvas_clean(collision);
         xo_draw_game_layout(canvas, collision);
-
         xo_draw_the_chosen_one(canvas, collision, (bool) creature_type);
         xo_draw_random_creatures(canvas, collision, num_creatures,
                                  inserted_creatures);
-
         xo_draw_life(canvas, life);
         xo_draw_timebar100(canvas, 100, NULL);
 
