@@ -76,7 +76,7 @@ int terminal_get_size(unsigned short *row, unsigned short *col)
 
 void terminal_clear(void)
 {
-    fwprintf( stdout, L"\033[2J\033[1;1H");
+    fwprintf(stdout, L"\033[2J\033[1;1H");
 }
 
 void terminal_put_chat_at(int x, int y, wchar_t ch)
