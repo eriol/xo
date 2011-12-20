@@ -39,9 +39,11 @@ BufferRW buffer_rw_create(int size)
 void buffer_rw_append(BufferRW b, buffer_rw_element_t value)
 {
     pthread_mutex_lock(&b->mtx_write);
-    b->data[b->count] = value;
-    b->count++;
-    b->data[b->count] = '\0';
+    if (b->count < b->size) {
+        b->data[b->count] = value;
+        b->count++;
+        b->data[b->count] = '\0';
+    }
     pthread_mutex_unlock(&b->mtx_write);
 }
 
