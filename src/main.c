@@ -103,6 +103,8 @@ int main(int argc, char **argv)
     }
 
     canvas_destroy(canvas);
+
+    fwprintf(stdout, L"Farewell for now!\n");
     exit(EXIT_SUCCESS);
 }
 
@@ -150,7 +152,7 @@ static int homerun(Canvas c, int t, int inserted_creatures)
 
 void *game_controller(void *arg)
 {
-    int life = 3, num_creatures, level = 1;
+    int life = 3, num_creatures, level = 0;
     int inserted_creatures[] = {0, 0};
     buffer_pc_element_t creature_type;
 
@@ -175,8 +177,11 @@ void *game_controller(void *arg)
         level++;
     }
 
-    canvas_destroy(canvas);
-    printf("Well done, you get to reach level %d", level);
+    terminal_restore(STDIN_FILENO, &user_termios);
+    if (level > 1)
+        fwprintf(stdout, L"Well done, you get to reach level %d!\n", level);
+    else
+        fwprintf(stdout, L"You need more practice!\n");
     exit(EXIT_SUCCESS);
 }
 
