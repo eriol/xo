@@ -19,10 +19,11 @@ void *game_controller(void *arg);
 BufferRW input_buffer;
 Canvas canvas, collision;
 
-int main(void)
+int main(int argc, char **argv)
 {
     setlocale(LC_ALL, "");
-    int s;
+    bool intro_flag = true, sound_flag = false;
+    int s, opt;
     pthread_t thr_input_controller, thr_game_controller;
     unsigned short rows, cols;
     buffer_element_t local_buffer[BUFFER_RW_MAX_SIZE];
@@ -32,10 +33,28 @@ int main(void)
     // Initialize random seed
     srandom(time(NULL));
 
+    while ((opt = getopt(argc, argv, "is")) != -1) {
+        switch (opt) {
+            case 'i':
+                intro_flag = false;
+                break;
+            case 's':
+                sound_flag = true;
+                break;
+            default:
+                fprintf(stderr, "Usage: %s [-is]\n", argv[0]);
+                fprintf(stderr, "    -i    Disable introduction\n");
+                fprintf(stderr, "    -s    Enable sound\n");
+                exit(EXIT_FAILURE);
+        }
+    }
+
     terminal_get_size(&rows, &cols);
     canvas = canvas_create(rows, cols, true);
     collision = canvas_create(rows, cols, false);
-    xo_intro(canvas);
+
+    if (intro_flag)
+        xo_intro(canvas);
 
     s = pthread_create(&thr_input_controller, NULL, input_controller, NULL);
     if (s != 0) {
