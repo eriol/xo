@@ -195,11 +195,11 @@ void *game_controller(void *arg)
             life--;
         } else {
             time_percentage -= 5;
+            // Take note how many levels the player solve
+            level++;
         }
         for (int i = 0; i < 2; i++)
             inserted_creatures[i] = 0;
-        // Take note how many levels 
-        level++;
     }
 
     terminal_restore(STDIN_FILENO, &user_termios);
