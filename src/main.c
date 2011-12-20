@@ -141,7 +141,7 @@ void *game_controller(void *arg)
     int inserted_creatures[] = {0, 0};
     buffer_pc_element_t creature_type;
 
-    while(life) {
+    while(life > 0) {
         buffer_pc_get(brain_buffer, &creature_type);
         buffer_pc_get(brain_buffer, &num_creatures);
 
@@ -156,11 +156,11 @@ void *game_controller(void *arg)
         xo_draw_life(canvas, life);
         xo_draw_timebar100(canvas, 100, NULL);
 
-//         printf("%d\n", inserted_creatures[creature_type]);
-
         if (!homerun(canvas, 100, inserted_creatures[creature_type])) {
             life--;
         }
+        for (int i = 0; i < 2; i++)
+            inserted_creatures[i] = 0;
     }
 }
 
