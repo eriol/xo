@@ -9,14 +9,18 @@
 #include "canvas.h"
 #include "buffer.h"
 #include "terminal.h"
+#include "utils.h"
 #include "xo.h"
 
 #define BUFFER_RW_MAX_SIZE 10
 
 void *input_controller(void *arg);
 void *game_controller(void *arg);
+void *brain(void *);
 
 BufferRW input_buffer;
+BufferPC brain_buffer;
+
 Canvas canvas, collision;
 
 int main(int argc, char **argv)
@@ -24,11 +28,12 @@ int main(int argc, char **argv)
     setlocale(LC_ALL, "");
     bool intro_flag = true, sound_flag = false;
     int s, opt;
-    pthread_t thr_input_controller, thr_game_controller;
+    pthread_t thr_input_controller, thr_game_controller, thr_brain;
     unsigned short rows, cols;
     buffer_rw_element_t local_buffer[BUFFER_RW_MAX_SIZE];
 
     input_buffer = buffer_rw_create(BUFFER_RW_MAX_SIZE);
+    brain_buffer = buffer_pc_create(1);
 
     // Initialize random seed
     srandom(time(NULL));
@@ -56,16 +61,34 @@ int main(int argc, char **argv)
     if (intro_flag)
         xo_intro(canvas);
 
-    s = pthread_create(&thr_input_controller, NULL, input_controller, NULL);
-    if (s != 0) {
-        perror("pthread_create: failed to create thr_input_controller");
-    }
+//     s = pthread_create(&thr_input_controller, NULL, input_controller, NULL);
+//     if (s != 0) {
+//         perror("pthread_create: failed to create thr_input_controller");
+//     }
     s = pthread_create(&thr_game_controller, NULL, game_controller, NULL);
     if (s != 0) {
         perror("pthread_create: failed to create thr_game_controller");
     }
+    s = pthread_create(&thr_brain, NULL, brain, NULL);
+    if (s != 0) {
+        perror("pthread_create: failed to create thr_brain");
+    }
 
     while (true) {
+        #ifdef TEST
+        int res;
+        res = buffer_rw_read(input_buffer, local_buffer);
+        if (res > 0) {
+            printf("%d\n", atoi(local_buffer));
+            printf("%d\n", res);
+        }
+        for (int i = 0; i < BUFFER_RW_MAX_SIZE; i++)
+            local_buffer[i] = 0;
+        int creature = 20;
+        printf("In main...\n");
+        buffer_pc_get(brain_creature_type_buffer, &creature);
+        printf("Creature: %d\n", creature);
+        #endif
         sleep(1);
     }
 
@@ -92,21 +115,37 @@ void *input_controller(void *arg)
 
 void *game_controller(void *arg)
 {
-    int inserted_number = 0;
-    int s, res, inserted_creature[] = {0, 0};
+    int life = 3, num_creatures;
+    int inserted_creature[] = {0, 0};
+    buffer_pc_element_t creature_type;
 
     while(true) {
+        canvas_clean(canvas);
+        canvas_clean(collision);
         xo_draw_game_layout(canvas, collision);
-        //     xo_draw_creature(canvas, collision, 1, 1, true, (int []) {NONE, F_RED, NONE});
-        //     xo_draw_bunch_creatures(canvas, collision, true, 4);
-        //     xo_draw_creature_random_point(canvas, collision, true,
-        //                                   (int []) {NONE, F_GREEN, NONE});
-        //     xo_draw_random_creatures(canvas, collision, 20, inserted_creature);
-        //     xo_draw_the_chosen_one(canvas, collision, true);
-        //     xo_draw_life(canvas, 3);
-        //     xo_draw_timebar100(canvas, 50, NULL);
+
+        buffer_pc_get(brain_buffer, &creature_type);
+        xo_draw_the_chosen_one(canvas, collision, (bool) creature_type);
+
+        buffer_pc_get(brain_buffer, &num_creatures);
+        xo_draw_random_creatures(canvas, collision, num_creatures,
+                                 inserted_creature);
+
+        xo_draw_life(canvas, life);
+        xo_draw_timebar100(canvas, 100, NULL);
         canvas_draw(canvas);
-        sleep(10);
+        sleep(1);
     }
 
+}
+
+void *brain(void *arg)
+{
+    int creature_type, start_creatures = randrange(1, 20);
+
+    while(true) {
+        creature_type = randrange(0, 1);
+        buffer_pc_put(brain_buffer, creature_type);
+        buffer_pc_put(brain_buffer, start_creatures);
+    }
 }
