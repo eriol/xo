@@ -11,6 +11,13 @@ struct buffer_rw_t {
     pthread_mutex_t mtx_write, mtx_read;
 };
 
+struct buffer_pc_t {
+    int count, size;
+    int head, tail;
+    buffer_pc_element_t *data;
+    pthread_mutex_t mtx;
+    pthread_cond_t until_not_empty, until_not_full;
+};
 
 BufferRW buffer_rw_create(int size)
 {
@@ -79,6 +86,63 @@ void buffer_rw_clean(BufferRW b)
 }
 
 void buffer_rw_free(BufferRW b)
+{
+    if (b->data != NULL)
+        free(b->data);
+
+    free(b);
+}
+
+BufferPC buffer_pc_create(int size) {
+    BufferPC b = malloc(sizeof(struct buffer_pc_t));
+    if (b == NULL) {
+        perror("buffer_pc_create: can't create BufferPC");
+        return NULL;
+    }
+
+    b->count = b->head = b->tail = 0;
+    b->size = size;
+
+    b->data = malloc(sizeof(buffer_pc_element_t) * size);
+    if (b->data == NULL) {
+        perror("buffer_pc_create: can't allocate memory for buffer data");
+        return NULL;
+    }
+
+    pthread_mutex_init(&b->mtx, NULL);
+    pthread_cond_init(&b->until_not_empty, NULL);
+    pthread_cond_init(&b->until_not_full, NULL);
+
+    return b;
+}
+
+void buffer_pc_put(BufferPC b, buffer_pc_element_t value)
+{
+    pthread_mutex_lock(&b->mtx);
+    while(b->count == b->size) {
+        pthread_cond_wait(&b->until_not_empty, &b->mtx);
+    }
+    b->data[b->tail] = value;
+    b->tail = (b->tail + 1) % b->size;
+    b->count++;
+    pthread_cond_broadcast(&b->until_not_full);
+    pthread_mutex_unlock(&b->mtx);
+}
+
+void buffer_pc_get(BufferPC b, buffer_pc_element_t *value)
+{
+    pthread_mutex_lock(&b->mtx);
+    while(b->count == 0) {
+        pthread_cond_wait(&b->until_not_full, &b->mtx);
+    }
+    *value = b->data[b->head];
+    b->head = (b->head + 1) % b->size;
+    b->count--;
+    pthread_cond_broadcast(&b->until_not_empty);
+    pthread_mutex_unlock(&b->mtx);
+}
+
+void buffer_pc_free(BufferPC b)
 {
     if (b->data != NULL)
         free(b->data);
