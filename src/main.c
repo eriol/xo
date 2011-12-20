@@ -36,6 +36,7 @@ int main(int argc, char **argv)
     setlocale(LC_ALL, "");
     bool intro_flag = true, sound_flag = false;
     int s, opt;
+    void *res;
     unsigned short rows, cols;
     pthread_t thr_input_controller, thr_game_controller, thr_sound_controller;
     pthread_t thr_brain;
@@ -90,22 +91,9 @@ int main(int argc, char **argv)
         }
     }
 
-    while (true) {
-        #ifdef TEST
-        int res;
-        res = buffer_rw_read(input_buffer, local_buffer);
-        if (res > 0) {
-            printf("%d\n", atoi(local_buffer));
-            printf("%d\n", res);
-        }
-        for (int i = 0; i < BUFFER_RW_MAX_SIZE; i++)
-            local_buffer[i] = 0;
-        int creature = 20;
-        printf("In main...\n");
-        buffer_pc_get(brain_creature_type_buffer, &creature);
-        printf("Creature: %d\n", creature);
-        #endif
-        sleep(1);
+    s = pthread_join(thr_game_controller, &res);
+    if (s != 0) {
+        perror("pthread_join: failed to join thr_game_controller");
     }
 
     canvas_destroy(canvas);
