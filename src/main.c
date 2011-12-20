@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     int s, opt;
     pthread_t thr_input_controller, thr_game_controller;
     unsigned short rows, cols;
-    buffer_element_t local_buffer[BUFFER_RW_MAX_SIZE];
+    buffer_rw_element_t local_buffer[BUFFER_RW_MAX_SIZE];
 
     input_buffer = buffer_rw_create(BUFFER_RW_MAX_SIZE);
 
