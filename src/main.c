@@ -156,6 +156,8 @@ static int homerun(Canvas c, int t, int inserted_creatures)
     for(int i=t; i > 0; i--) {
         xo_draw_timebar100(c, i, NULL);
         canvas_draw(c);
+        // Clean local buffer
+        memset(local_buffer, 0, BUFFER_RW_MAX_SIZE);
         res = buffer_rw_read(input_buffer, local_buffer);
         if (res > 0) {
             if (atoi(local_buffer) == inserted_creatures) {
