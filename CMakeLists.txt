@@ -4,7 +4,9 @@ cmake_minimum_required(VERSION 2.8)
 
 find_program(COLORGCC_EXECUTABLE colorgcc)
 
-set(CMAKE_C_COMPILER "colorgcc")
+if(COLORGCC_EXECUTABLE)
+    set(CMAKE_C_COMPILER "colorgcc")
+endif(COLORGCC_EXECUTABLE)
 
 project(xo C)
 
