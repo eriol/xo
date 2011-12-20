@@ -91,9 +91,9 @@ int main(int argc, char **argv)
         }
     }
 
-    s = pthread_join(thr_game_controller, &res);
+    s = pthread_join(thr_input_controller, &res);
     if (s != 0) {
-        perror("pthread_join: failed to join thr_game_controller");
+        perror("pthread_join: failed to join thr_input_controller");
     }
 
     canvas_destroy(canvas);
@@ -111,10 +111,11 @@ void *input_controller(void *arg)
             buffer_rw_append(input_buffer, ch);
         } else if (ch == ' ') {
             buffer_rw_clean(input_buffer);
+        } else if (ch == 'q') {
+            break;
         }
     }
-
-    return 0;
+    return (int *) 0;
 }
 
 static int homerun(Canvas c, int t, int inserted_creatures)
@@ -192,6 +193,4 @@ void *sound_controller(void *arg) {
         s = i*i*(i&15)*((i>>9|i>>12)&19&i>>8);
         write(fd, &s, 1);
     }
-
-    return (int *) 0;
 }
