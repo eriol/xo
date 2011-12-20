@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     int s, opt;
     pthread_t thr_input_controller, thr_game_controller, thr_brain;
     unsigned short rows, cols;
-    buffer_rw_element_t local_buffer[BUFFER_RW_MAX_SIZE];
+
 
     input_buffer = buffer_rw_create(BUFFER_RW_MAX_SIZE);
     brain_buffer = buffer_pc_create(1);
@@ -63,10 +63,10 @@ int main(int argc, char **argv)
     if (intro_flag)
         xo_intro(canvas);
 
-//     s = pthread_create(&thr_input_controller, NULL, input_controller, NULL);
-//     if (s != 0) {
-//         perror("pthread_create: failed to create thr_input_controller");
-//     }
+    s = pthread_create(&thr_input_controller, NULL, input_controller, NULL);
+    if (s != 0) {
+        perror("pthread_create: failed to create thr_input_controller");
+    }
     s = pthread_create(&thr_game_controller, NULL, game_controller, NULL);
     if (s != 0) {
         perror("pthread_create: failed to create thr_game_controller");
@@ -115,13 +115,33 @@ void *input_controller(void *arg)
     return 0;
 }
 
+static int homerun(Canvas c, int t, int inserted_creatures)
+{
+    int res = 0;
+    buffer_rw_element_t local_buffer[BUFFER_RW_MAX_SIZE];
+
+    for(int i=t; i > 0; i--) {
+        xo_draw_timebar100(c, i, NULL);
+        canvas_draw(c);
+        res = buffer_rw_read(input_buffer, local_buffer);
+        if (res > 0) {
+            if (atoi(local_buffer) == inserted_creatures) {
+                buffer_rw_clean(input_buffer);
+                return 1;
+            }
+        }
+        usleep(TIMER_SPEED);
+    }
+    return 0;
+}
+
 void *game_controller(void *arg)
 {
     int life = 3, num_creatures;
-    int inserted_creature[] = {0, 0};
+    int inserted_creatures[] = {0, 0};
     buffer_pc_element_t creature_type;
 
-    while(true) {
+    while(life) {
         buffer_pc_get(brain_buffer, &creature_type);
         buffer_pc_get(brain_buffer, &num_creatures);
 
@@ -131,19 +151,17 @@ void *game_controller(void *arg)
 
         xo_draw_the_chosen_one(canvas, collision, (bool) creature_type);
         xo_draw_random_creatures(canvas, collision, num_creatures,
-                                 inserted_creature);
+                                 inserted_creatures);
 
         xo_draw_life(canvas, life);
         xo_draw_timebar100(canvas, 100, NULL);
 
-        for(int i=100; i > 0; i--) {
-            xo_draw_timebar100(canvas, i, NULL);
-            usleep(TIMER_SPEED);
-            canvas_draw(canvas);
-        }
-        life--;
-    }
+//         printf("%d\n", inserted_creatures[creature_type]);
 
+        if (!homerun(canvas, 100, inserted_creatures[creature_type])) {
+            life--;
+        }
+    }
 }
 
 void *brain(void *arg)
