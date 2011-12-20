@@ -1,17 +1,18 @@
 #include <pthread.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "buffer.h"
 
-typedef struct buffer_rw_t {
+struct buffer_rw_t {
     int count, size, number_of_readers;
     buf_element_t *data;
     pthread_mutex_t mtx_write, mtx_read;
 };
 
 
-int buffer_rw_create(int size)
+BufferRW buffer_rw_create(int size)
 {
     BufferRW b = malloc(sizeof(struct buffer_rw_t));
     if (b == NULL) {
@@ -39,6 +40,7 @@ void buffer_rw_append(BufferRW b, buf_element_t value)
     pthread_mutex_lock(&b->mtx_write);
     b->data[b->count] = value;
     b->count++;
+    b->data[b->count] = '\0';
     pthread_mutex_unlock(&b->mtx_write);
 }
 
