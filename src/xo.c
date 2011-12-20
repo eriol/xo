@@ -39,9 +39,9 @@ void xo_intro(Canvas c)
                          CREATURE_SIZE_X - multi_creature_lenght + i,
                          false, (int []) {NONE, color2, NONE});
         //Backward
-        xo_draw_creature(c, NULL, center + 2, cols - i, false,
+        xo_draw_creature(c, NULL, center + 2, cols -2 - i, false,
                          (int []) {NONE, color3, NONE});
-        xo_draw_creature(c, NULL, center + 2, cols  + CREATURE_SIZE_X - i,
+        xo_draw_creature(c, NULL, center + 2, cols -2 + CREATURE_SIZE_X - i,
                          true, (int []) {NONE, color4, NONE});
         xo_draw_background_intro(c);
         canvas_draw(c);
