@@ -143,7 +143,7 @@ void *game_controller(void *arg)
     int inserted_creatures[] = {0, 0};
     buffer_pc_element_t creature_type;
 
-    while(life > 0) {
+    while(life >= 0) {
         buffer_pc_get(brain_buffer, &creature_type);
         buffer_pc_get(brain_buffer, &num_creatures);
 
