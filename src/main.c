@@ -14,9 +14,10 @@
 #include "utils.h"
 #include "xo.h"
 
+#define BUFFER_RW_MAX_SIZE 10
+#define MAX_CREATURES 50
 #define TIMER_SPEED 100000 /* microseconds */
 
-#define BUFFER_RW_MAX_SIZE 10
 
 void *brain(void *);
 void *game_controller(void *arg);
@@ -154,11 +155,13 @@ void *game_controller(void *arg)
 {
     int life = 3, num_creatures, level = 0;
     int inserted_creatures[] = {0, 0};
+    int time_percentage = 100;
     buffer_pc_element_t creature_type;
 
     while(life >= 0) {
         buffer_pc_get(brain_buffer, &creature_type);
         buffer_pc_get(brain_buffer, &num_creatures);
+
         canvas_clean(canvas);
         canvas_clean(collision);
         xo_draw_game_layout(canvas, collision);
@@ -168,8 +171,11 @@ void *game_controller(void *arg)
         xo_draw_life(canvas, life);
         xo_draw_timebar100(canvas, 100, NULL);
 
-        if (!homerun(canvas, 100, inserted_creatures[creature_type])) {
+        if (!homerun(canvas, time_percentage,
+                     inserted_creatures[creature_type])) {
             life--;
+        } else {
+            time_percentage -= 5;
         }
         for (int i = 0; i < 2; i++)
             inserted_creatures[i] = 0;
@@ -187,10 +193,11 @@ void *game_controller(void *arg)
 
 void *brain(void *arg)
 {
-    int creature_type, start_creatures = randrange(1, 20);
+    int creature_type, start_creatures;
 
     while(true) {
         creature_type = randrange(0, 1);
+        start_creatures =  randrange(1, MAX_CREATURES);
         buffer_pc_put(brain_buffer, creature_type);
         buffer_pc_put(brain_buffer, start_creatures);
     }
