@@ -107,7 +107,7 @@ void xo_draw_creature(Canvas c, Canvas o, int x, int y, bool creature_x,
             if (o != NULL) {
                 canvas_set_element(o, i + x, j + y, obstacle_mark);
             }
-            if (options != NULL) {
+            if (canvas_has_advanced_options(c) && options != NULL) {
                 canvas_set_element_options(c, i + x, j + y, options);
             }
         }
