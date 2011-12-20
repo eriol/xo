@@ -1,7 +1,11 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
-char getch(void);
+#include <termios.h>
+
+int terminal_set_cbreak(int fd, struct termios *prev_termios);
+int terminal_restore(int fd, struct termios *t);
+char terminal_read_1_byte(int fd);
 void terminal_clear(void);
 void terminal_draw_horizontal_line(int x, int y, int lenght, wchar_t ch);
 void terminal_draw_vertical_line(int x, int y, int lenght, wchar_t ch);

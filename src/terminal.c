@@ -4,24 +4,47 @@
 #include <unistd.h>
 #include <wchar.h>
 
-char getch(void) {
-    char buf = 0;
-    struct termios old = {0};
-    if (tcgetattr(0, &old) < 0)
-        perror("tcgetattr()");
-    old.c_lflag &= ~ICANON;
-    old.c_lflag &= ~ECHO;
-    old.c_cc[VMIN] = 1;
-    old.c_cc[VTIME] = 0;
-    if (tcsetattr(0, TCSANOW, &old) < 0)
-        perror("tcsetattr ICANON");
-    if (read(0, &buf, 1) < 0)
-        perror ("read()");
-    old.c_lflag |= ICANON;
-    old.c_lflag |= ECHO;
-    if (tcsetattr(0, TCSADRAIN, &old) < 0)
-        perror ("tcsetattr ~ICANON");
-    return (buf);
+int terminal_set_cbreak(int fd, struct termios *prev_termios)
+{
+    struct termios t;
+    if (tcgetattr(fd, &t) == -1) {
+        perror("terminal_set_cbreak: failed to fetch terminal attributes");
+        return -1;
+    }
+
+    if (prev_termios != NULL)
+        *prev_termios = t;
+
+    t.c_lflag &= ~(ICANON | ECHO);
+
+    t.c_cc[VMIN] = 1;    // One character at time
+    t.c_cc[VTIME] = 0;   // Blocking
+
+    if (tcsetattr(fd, TCSANOW, &t) == -1) {
+        perror("terminal_set_cbreak: failed to set terminal attributes");
+        return -1;
+    }
+
+    return 0;
+}
+
+int terminal_restore(int fd, struct termios *t)
+{
+    if (tcsetattr(fd, TCSANOW, t) == -1) {
+        perror("terminal_set_cbreak: failed to set terminal attributes");
+        return -1;
+    }
+
+    return 0;
+}
+
+char terminal_read_1_byte(int fd)
+{
+    char buf;
+    if (read(fd, &buf, 1) < 0)
+        perror ("terminal_read_1_byte: failed to read");
+
+    return buf;
 }
 
 /**

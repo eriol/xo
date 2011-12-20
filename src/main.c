@@ -30,6 +30,7 @@ BufferPC brain_buffer;
 Canvas canvas, collision;
 
 const char audio_dev[] = "/dev/audio";
+static struct termios user_termios; // Terminal user settings
 
 int main(int argc, char **argv)
 {
@@ -109,9 +110,10 @@ void *input_controller(void *arg)
 {
     char ch = 0;
 
-    while(true) {
-        ch = getch();
+    terminal_set_cbreak(STDIN_FILENO, &user_termios);
 
+    while(true) {
+        ch = terminal_read_1_byte(STDIN_FILENO);
         if (ch >= '0' && ch <='9') {
             buffer_rw_append(input_buffer, ch);
         } else if (ch == ' ') {
@@ -120,6 +122,9 @@ void *input_controller(void *arg)
             break;
         }
     }
+
+    terminal_restore(STDIN_FILENO, &user_termios);
+
     return (int *) 0;
 }
 
@@ -145,7 +150,7 @@ static int homerun(Canvas c, int t, int inserted_creatures)
 
 void *game_controller(void *arg)
 {
-    int life = 3, num_creatures;
+    int life = 3, num_creatures, level = 1;
     int inserted_creatures[] = {0, 0};
     buffer_pc_element_t creature_type;
 
@@ -166,9 +171,13 @@ void *game_controller(void *arg)
         }
         for (int i = 0; i < 2; i++)
             inserted_creatures[i] = 0;
+        // Take note how many levels 
+        level++;
     }
 
-    return (int *) 0;
+    canvas_destroy(canvas);
+    printf("Well done, you get to reach level %d", level);
+    exit(EXIT_SUCCESS);
 }
 
 void *brain(void *arg)
