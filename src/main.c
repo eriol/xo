@@ -12,6 +12,8 @@
 #include "utils.h"
 #include "xo.h"
 
+#define TIMER_SPEED 100000 /* microseconds */
+
 #define BUFFER_RW_MAX_SIZE 10
 
 void *input_controller(void *arg);
@@ -120,21 +122,26 @@ void *game_controller(void *arg)
     buffer_pc_element_t creature_type;
 
     while(true) {
+        buffer_pc_get(brain_buffer, &creature_type);
+        buffer_pc_get(brain_buffer, &num_creatures);
+
         canvas_clean(canvas);
         canvas_clean(collision);
         xo_draw_game_layout(canvas, collision);
 
-        buffer_pc_get(brain_buffer, &creature_type);
         xo_draw_the_chosen_one(canvas, collision, (bool) creature_type);
-
-        buffer_pc_get(brain_buffer, &num_creatures);
         xo_draw_random_creatures(canvas, collision, num_creatures,
                                  inserted_creature);
 
         xo_draw_life(canvas, life);
         xo_draw_timebar100(canvas, 100, NULL);
-        canvas_draw(canvas);
-        sleep(1);
+
+        for(int i=100; i > 0; i--) {
+            xo_draw_timebar100(canvas, i, NULL);
+            usleep(TIMER_SPEED);
+            canvas_draw(canvas);
+        }
+        life--;
     }
 
 }

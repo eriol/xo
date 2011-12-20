@@ -159,6 +159,8 @@ void xo_draw_timebar(Canvas c, int lenght, int *options)
     if (y2 > max_length)
         y2 = max_length;
 
+    // Clean before draw
+    canvas_box_fill(c, x1, y1, x2, max_length, L' ', NULL);
     canvas_box_fill(c, x1, y1, x2, y2, timebar_mark, options);
 }
 
