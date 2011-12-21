@@ -214,13 +214,13 @@ void *game_controller(void *arg)
 
 void *brain(void *arg)
 {
-    int creature_type, start_creatures;
+    int creature_type, num_creatures;
 
     while(true) {
         creature_type = randrange(0, 1);
-        start_creatures =  randrange(1, MAX_CREATURES);
+        num_creatures =  randrange(1, MAX_CREATURES);
         buffer_pc_put(brain_buffer, creature_type);
-        buffer_pc_put(brain_buffer, start_creatures);
+        buffer_pc_put(brain_buffer, num_creatures);
     }
 }
 
