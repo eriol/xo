@@ -50,7 +50,7 @@ int terminal_set_cbreak(int fd, struct termios *prev_termios)
 int terminal_restore(int fd, struct termios *t)
 {
     if (tcsetattr(fd, TCSANOW, t) == -1) {
-        perror("terminal_set_cbreak: failed to set terminal attributes");
+        perror("terminal_restore: failed to set terminal attributes");
         return -1;
     }
 
