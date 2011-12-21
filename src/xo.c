@@ -281,4 +281,3 @@ void xo_draw_random_creatures(Canvas c, Canvas o, int n, int *in_xo)
         }
     }
 }
-
