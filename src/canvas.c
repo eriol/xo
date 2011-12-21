@@ -74,8 +74,7 @@ Canvas canvas_create(int rows, int cols, bool advanced_options)
         c->option_map = malloc(rows * sizeof(int **));
         if (c->option_map == NULL) {
             perror("canvas_create: can't allocate option rows array");
-            c->advanced_options = false;
-            goto exit;
+            return NULL;
         }
 
         for (int i = 0; i < rows; i++) {
@@ -83,8 +82,7 @@ Canvas canvas_create(int rows, int cols, bool advanced_options)
 
             if (c->option_map[i] == NULL) {
                 perror("canvas_create: can't allocate option col array");
-                c->advanced_options = false;
-                goto exit;
+                return NULL;
             }
 
             for (int j = 0; j < cols; j++) {
@@ -92,17 +90,15 @@ Canvas canvas_create(int rows, int cols, bool advanced_options)
 
                 if (c->option_map[i][j] == NULL) {
                     perror("canvas_create: can't allocate options array");
-                    c->advanced_options = false;
-                    goto exit;
+                    return NULL;
                 }
             }
         }
     }
 
-    exit:
-        canvas_clean(c);
+    canvas_clean(c);
 
-        return c;
+    return c;
 }
 
 void canvas_clean(Canvas c)
