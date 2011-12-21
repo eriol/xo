@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     // Initialize random seed
     srandom(time(NULL));
 
-    while ((opt = getopt(argc, argv, "isc")) != -1) {
+    while ((opt = getopt(argc, argv, "isch")) != -1) {
         switch (opt) {
             case 'i':
                 intro_flag = false;
@@ -80,12 +80,14 @@ int main(int argc, char **argv)
             case 'c':
                 color_flag = false;
                 break;
+            case 'h':
             default:
-                fprintf(stderr, "Usage: %s [-is]\n", argv[0]);
+                fprintf(stderr, "Usage: %s [-isch]\n", argv[0]);
                 fprintf(stderr, "    -i    Disable introduction\n");
                 fprintf(stderr, "    -s    Enable sound\n");
                 fprintf(stderr, "    -c    Disable colors\n");
-                exit(EXIT_FAILURE);
+                fprintf(stderr, "    -h    Show this help\n");
+                exit(EXIT_SUCCESS);
         }
     }
 
